@@ -1,58 +1,56 @@
 "use client";
-import { useRouterQuery } from "@/hooks/useRouterQuery";
-import { useRouter } from "next/navigation";
 import React from "react";
 import Table from "../ui/Table";
 import { createColumnHelper } from "@tanstack/react-table";
-import { User } from "@/services/user-management/types";
-import Link from "next/link";
+import { useRouterQuery } from "@/hooks/useRouterQuery";
+import { useRouter } from "next/navigation";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { OptionIcon } from "../icons";
-import { Button } from "../ui/button";
+import Link from "next/link";
+import { PlanDetail } from "@/services/plan-management";
 import { SearchParams } from "@/constants";
 import NativeModal from "../NativeElements/NativeModal";
-import UserMessageModal from "./UserMessageModal";
 
-const userColumnHelper = createColumnHelper<User>();
+const planColumnHelper = createColumnHelper<PlanDetail>();
 const cellClass = "border-b py-5 border-content2";
 
-const UserManagementTable = () => {
+const PlanDetailTable = () => {
   const router = useRouter();
   const { getQuery, changeQueries } = useRouterQuery();
 
-  const usersArray = [
+  const PlanDetailsArray = [
     {
       id: "1",
-      userMail: "mojolarichards@gmail.com",
-      country: "U.S.A",
-      phoneNumber: "+1 (923) 455 6572",
-      userRole: "Advertiser",
+      plan: "25 posts /month  x24h runtime",
+      price: "$5.99/m",
+      subscriber: "100",
+      status: "Active",
     },
     {
       id: "2",
-      userMail: "mojolarichards@gmail.com",
-      country: "U.S.A",
-      phoneNumber: "+1 (923) 455 6572",
-      userRole: "Advertiser",
+      plan: "6 posts/month x48h runtime",
+      price: "$6.99/m",
+      subscriber: "100",
+      status: "Active",
     },
     {
       id: "3",
-      userMail: "mojolarichards@gmail.com",
-      country: "U.S.A",
-      phoneNumber: "+1 (923) 455 6572",
-      userRole: "Advertiser",
+      plan: "4 posts per month  x24h runtime",
+      price: "$1.99/m",
+      subscriber: "100",
+      status: "Active",
     },
     {
       id: "4",
-      userMail: "mojolarichards@gmail.com",
-      country: "U.S.A",
-      phoneNumber: "+1 (923) 455 6572",
-      userRole: "Advertiser",
+      plan: "Unlimited post per month x30d runtime",
+      price: "$9.99/m",
+      subscriber: "100",
+      status: "Active",
     },
   ];
 
-  const UserColumns = [
-    userColumnHelper.display({
+  const PlanDetailColumns = [
+    planColumnHelper.display({
       header: "S/N",
       cell: ({ row }) => row.index + 1,
       meta: {
@@ -62,8 +60,8 @@ const UserManagementTable = () => {
       },
     }),
 
-    userColumnHelper.accessor("userMail", {
-      header: "User Mail",
+    planColumnHelper.accessor("plan", {
+      header: "Plan",
 
       meta: {
         cellProps: {
@@ -71,31 +69,23 @@ const UserManagementTable = () => {
         },
       },
     }),
-    userColumnHelper.accessor("country", {
-      header: "Country",
+    planColumnHelper.accessor("subscriber", {
+      header: "Subscriber",
       meta: {
         cellProps: {
           className: cellClass,
         },
       },
     }),
-    userColumnHelper.accessor("phoneNumber", {
-      header: "Phone Number",
+    planColumnHelper.accessor("status", {
+      header: "Status",
       meta: {
         cellProps: {
           className: cellClass,
         },
       },
     }),
-    userColumnHelper.accessor("userRole", {
-      header: "User Role",
-      meta: {
-        cellProps: {
-          className: cellClass,
-        },
-      },
-    }),
-    userColumnHelper.display({
+    planColumnHelper.display({
       header: "Actions",
       cell: ({ row: { original } }) => {
         return (
@@ -108,41 +98,28 @@ const UserManagementTable = () => {
               </PopoverTrigger>
               <PopoverContent>
                 <div className="flex flex-col gap-3">
-                  <Link
-                    className="capitalize pb-1 border-b-[0.1px] transition-all ease-in hover:font-bold text-[13px]"
-                    href={`/user-management/user/${original?.id}`}
-                  >
-                    manage user events
-                  </Link>
                   <p
-                    className="capitalize cursor-pointer pb-1 border-b-[0.1px] transition-all ease-in hover:font-bold text-[13px]"
-                    onClick={() =>
-                      changeQueries({ [SearchParams.ACTION]: "sendMessage" })
-                    }
-                  >
-                    send user a message
-                  </p>
-                  <p
-                    className="capitalize cursor-pointer transition-all ease-in hover:font-bold pb-1 border-b-[0.1px] text-[13px]"
+                    className="capitalize cursor-pointer pb-1 border-b-[0.1px] text-[13px]"
                     onClick={() => {
                       // console.log(original.id);
                       changeQueries({
-                        [SearchParams.ACTION]: "suspendUser",
+                        [SearchParams.ACTION]: "deactivatePlan",
                       });
                     }}
+                    // href={`/event-management/event/${original?.id}`}
                   >
-                    suspend user
+                    Deactivate Plan
                   </p>
                   <p
-                    className="capitalize pb-1 cursor-pointer transition-all ease-in border-b-[0.1px] hover:font-bold text-[13px]"
+                    className="capitalize cursor-pointer text-red-500 pb-1 border-b-[0.1px] text-[13px]"
                     onClick={() => {
                       // console.log(original.id);
                       changeQueries({
-                        [SearchParams.ACTION]: "deleteUser",
+                        [SearchParams.ACTION]: "deletePlan",
                       });
                     }}
                   >
-                    delete
+                    Delete Plan
                   </p>
                 </div>
               </PopoverContent>
@@ -157,16 +134,10 @@ const UserManagementTable = () => {
       },
     }),
   ];
-
   const handleCloseDialog = () => {
     //get the id fromm the query and run the delete event api trigger
     // the code below this can be in the onSuccess the way bolu did to show the modal until request is successfful
     //check the kind of action in the url so as to know which endpint to call i.e use if calls here for that
-    changeQueries({ [SearchParams.ACTION]: undefined });
-  };
-
-  // for message modal
-  const handleOpenMessageModal = () => {
     changeQueries({ [SearchParams.ACTION]: undefined });
   };
 
@@ -176,8 +147,8 @@ const UserManagementTable = () => {
         <Table
           isPaginated
           manualPagination
-          columns={UserColumns}
-          data={usersArray}
+          columns={PlanDetailColumns}
+          data={PlanDetailsArray}
           // isLoading={isLoading}
           // pageIndex={pageIndex - 1}
           // pageSize={10}
@@ -190,9 +161,8 @@ const UserManagementTable = () => {
         // actionType={"deleteUserEvent"}
         handleCloseDialog={handleCloseDialog}
       />
-      <UserMessageModal handleCloseDialog={handleOpenMessageModal} />
     </div>
   );
 };
 
-export default UserManagementTable;
+export default PlanDetailTable;

@@ -1,10 +1,12 @@
 "use client";
-import EventDetailTable from "@/components/EventManagement/EventDetailTable";
 import NativeSelect from "@/components/NativeElements/NativeSelect";
 import { Input } from "@/components/ui/input";
-import React from "react";
 
-const EventManagementPage = () => {
+export default function RoutesLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <div className="">
       <div className="flex justify-between md:items-center md:flex-row flex-col md:gap-0 gap-3">
@@ -15,22 +17,20 @@ const EventManagementPage = () => {
         <div className="flex justify-between md:justify-end w-full items-center md:gap-2">
           <NativeSelect
             onChange={() => console.log("yes")}
-            placeholder="Select a country"
+            placeholder="Pick a country"
             title="Countries"
-            options={["USA"]}
+            options={["USA", "France"]}
           />
           <NativeSelect
-            onChange={() => console.log("yes")}
-            placeholder="Pick status"
-            title="Status"
-            options={["Ongoing"]}
+            onChange={() => console.log("no")}
+            placeholder="Pick a role"
+            title="Roles"
+            options={["Advertiser", "Manager"]}
           />
         </div>
       </div>
 
-      <EventDetailTable />
+      <div className=" ">{children}</div>
     </div>
   );
-};
-
-export default EventManagementPage;
+}

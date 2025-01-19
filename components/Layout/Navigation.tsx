@@ -5,6 +5,7 @@ import {
   CloseIcon,
   EventIcon,
   PlanIcon,
+  UserIconInSidenav,
 } from "../icons";
 import { SiteConfig, siteConfig } from "../../config/site";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
@@ -26,7 +27,7 @@ const Icon = ({ title }: { title: string }) => {
     case "user management":
       return (
         <div className="w-4">
-          <UserIcon width="18" height="18" />
+          <UserIconInSidenav width="18" height="18" />
         </div>
       );
     case "event management":

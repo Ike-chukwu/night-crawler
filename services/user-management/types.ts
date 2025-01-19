@@ -5,3 +5,11 @@ export type User = {
     phoneNumber: string;
     userRole: string;
 };
+
+export type Event = {
+    id: string;
+    eventName: string,
+    country: string,
+    eventLocation: string,
+    date: string,
+};

@@ -1,5 +1,5 @@
 "use client";
-import { ChartIcon, HamburgerIcon } from "@/components/icons";
+import { HamburgerIcon } from "@/components/icons";
 import Header from "@/components/Layout/Header";
 import { MobileNav, Sidebar } from "@/components/Layout/Navigation";
 import Image from "next/image";
@@ -13,7 +13,7 @@ export default function AuthenticatedLayout({
   const [navStatus, setNavStatus] = useState(false);
 
   return (
-    <div className="bg-white px-4 py-2 flex min-h-[100vh]">
+    <div className="bg-white md:bg-[#7940EC] px-4 md:px-6 py-2 flex min-h-[100vh]">
       <div className="hidden w-0 lg:w-[300px] bg-[#7940ec] fixed lg:block inset-0 pt-4 pb-2 pl-2 pr-2 ">
         <Image
           alt="logo"
@@ -25,7 +25,7 @@ export default function AuthenticatedLayout({
         <Sidebar setNavStatus={setNavStatus} />
       </div>
       <MobileNav setNavStatus={setNavStatus} navStatus={navStatus} />
-      <div className="flex-1 lg:ml-[300px] bg-white md:px-4 pt-4 pb-2 rounded-md">
+      <div className="flex-1 lg:ml-[300px] bg-white md:px-6 pt-4 pb-2 rounded-xl">
         <div className="mx-auto">
           <div className="w-full flex-col md:flex-row gap-3 md:items-center flex justify-between">
             <div className="flex flex-col gap-1 w-full">
@@ -57,7 +57,7 @@ export default function AuthenticatedLayout({
               onClick={() => setNavStatus(true)}
             ></div> */}
           </div>
-          <div className="pt-10 ">{children}</div>
+          <div className="pt-10 bg-white">{children}</div>
         </div>
       </div>
     </div>
