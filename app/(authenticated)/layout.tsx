@@ -25,7 +25,7 @@ export default function AuthenticatedLayout({
         <Sidebar setNavStatus={setNavStatus} />
       </div>
       <MobileNav setNavStatus={setNavStatus} navStatus={navStatus} />
-      <div className="flex-1 lg:ml-[300px] bg-white md:px-6 pt-4 pb-2 rounded-xl">
+      <div className="w-full lg:ml-[300px] bg-white md:px-6 pt-4 pb-2 rounded-xl">
         <div className="mx-auto">
           <div className="w-full flex-col md:flex-row gap-3 md:items-center flex justify-between">
             <div className="flex flex-col gap-1 w-full">
