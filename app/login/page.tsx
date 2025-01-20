@@ -73,7 +73,7 @@ const AuthPage = () => {
       <div className="hidden px-4 w-0 min-h-screen xl:flex justify-between items-center xl:w-[50%] bg-loginImage object-cover object-center bg-no-repeat">
         <p className="w-[500px] mx-auto text-center text-white leading-10">
           “Your command center for managing events, tracking attendees, and
-          shaping unforgettable experiences. Let’s make it happen!"
+          shaping unforgettable experiences. Let&apos;s make it happen!"
         </p>
       </div>
     </div>
