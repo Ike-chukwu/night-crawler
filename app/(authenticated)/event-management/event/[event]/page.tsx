@@ -11,7 +11,7 @@ const ManageEvent = () => {
   const { push } = useRouter();
   return (
     <div className="py-3">
-      <div className="flex w-full justify-between">
+      <div className="flex flex-col gap-3 md:gap-0 md:flex-row w-full justify-between">
         <div className="flex gap-2 mt-2 items-center">
           <BackIcon
             width="12"
@@ -30,7 +30,7 @@ const ManageEvent = () => {
           onChange={() => console.log("yes")}
         />
       </div>
-      <div className="w-[700px] py-14">
+      <div className="md:w-[700px] py-14">
         <Image
           src="/eventGraph.jpg"
           width={400}

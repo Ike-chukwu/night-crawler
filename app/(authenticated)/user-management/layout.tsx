@@ -14,7 +14,7 @@ export default function RoutesLayout({
           className="w-full md:w-[300px]"
           placeholder="Search by user mail"
         />
-        <div className="flex justify-between md:justify-end w-full items-center md:gap-2">
+        <div className="flex gap-2 justify-between md:justify-end w-full items-center md:gap-2">
           <NativeSelect
             onChange={() => console.log("yes")}
             placeholder="Pick a country"

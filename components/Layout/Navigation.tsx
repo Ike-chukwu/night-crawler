@@ -112,14 +112,21 @@ const MenuItem = ({
       className={clsx(
         "py-3 md:py-4 cursor-pointer pl-3 pr-1 flex gap-4 hover:bg-[#935eff] hover:font-bold ease-in duration-300 rounded-md w-full",
         {
-          "bg-[#935eff]": active,
+          "bg-[#7e4ae6] md:bg-[#935eff]": active,
         }
       )}
       onClick={() => setNavStatus(false)}
     >
       <Icon title={menu.label} />
       {/* <ChartIcon width="17" height="16" /> */}
-      <span className="text-[15px] capitalize text-white">{menu.label}</span>
+      <span
+        className={
+          "text-[15px] capitalize text-white " +
+          (active ? "font-bold" : "font-normal")
+        }
+      >
+        {menu.label}
+      </span>
     </Link>
     // <li ref={ref}>
     //   <Link

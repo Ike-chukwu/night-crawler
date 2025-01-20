@@ -14,13 +14,20 @@ type Props = {
   options: string[];
   title?: string;
   placeholder?: string;
+  className?: string;
 };
 
-const NativeSelect = ({ onChange, options, title, placeholder }: Props) => {
+const NativeSelect = ({
+  onChange,
+  options,
+  title,
+  placeholder,
+  className,
+}: Props) => {
   return (
     <>
       <Select onValueChange={onChange}>
-        <SelectTrigger className="w-[48%] md:w-[180px]">
+        <SelectTrigger className={className}>
           <SelectValue placeholder={placeholder} />
         </SelectTrigger>
         <SelectContent>
