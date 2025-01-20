@@ -14,14 +14,14 @@ const EventManagementPage = () => {
         />
         <div className="flex justify-between md:justify-end w-full items-center md:gap-2">
           <NativeSelect
-            className="w-[48%] md:w-[180px]"
+            className="w-[49%] md:w-[180px]"
             onChange={() => console.log("yes")}
             placeholder="Select a country"
             title="Countries"
             options={["USA"]}
           />
           <NativeSelect
-            className="w-[48%] md:w-[180px]"
+            className="w-[49%] md:w-[180px]"
             onChange={() => console.log("yes")}
             placeholder="Pick status"
             title="Status"
