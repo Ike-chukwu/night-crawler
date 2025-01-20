@@ -37,21 +37,22 @@ const Home = () => {
         imgLink="/barchat.png"
         linkText="Go to User Management"
         title="User Management"
-        href=""
+        href="/user-management"
       />
       <AnalyticCard
         icon={<PlanManagementIcon width="18" height="18" color="black" />}
         imgLink="/piechart.png"
         linkText="Go to Plan Management"
         title="Plan Management"
-        href=""
+        href="/plan-management"
       />
       <AnalyticCard
         icon={<EventCreationIcon width="16" height="16" color="black" />}
         imgLink="/barchat.png"
         title="Top Event Creation Locations"
         filter={true}
-        href=""
+        linkText="Go to Event Management"
+        href="/event-management"
       />
       <AnalyticCard
         icon={<EventCreationIcon width="16" height="16" color="black" />}
@@ -59,7 +60,7 @@ const Home = () => {
         title="Top Event Attendance Locations"
         filter={true}
         linkText="Go to Event Management"
-        href=""
+        href="/event-management"
       />
     </div>
   );

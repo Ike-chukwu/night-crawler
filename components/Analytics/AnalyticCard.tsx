@@ -64,9 +64,9 @@ const AnalyticCard = ({
       <Image
         alt="barChart"
         src={imgLink}
-        width={400}
-        height={200}
-        className="w-full h-[216]"
+        width={150}
+        height={150}
+        className="w-full h-[150]"
       />
       {linkText && (
         <Link

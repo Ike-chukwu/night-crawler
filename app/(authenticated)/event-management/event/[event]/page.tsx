@@ -28,6 +28,7 @@ const ManageEvent = () => {
           title="Years"
           options={["2024"]}
           onChange={() => console.log("yes")}
+          className="w-full md:w-[180px]"
         />
       </div>
       <div className="md:w-[700px] py-14">
