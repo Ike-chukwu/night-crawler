@@ -3,7 +3,7 @@ import { HamburgerIcon } from "@/components/icons";
 import Header from "@/components/Layout/Header";
 import { MobileNav, Sidebar } from "@/components/Layout/Navigation";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { Suspense, useState } from "react";
 
 export default function AuthenticatedLayout({
   children,
@@ -57,7 +57,9 @@ export default function AuthenticatedLayout({
               onClick={() => setNavStatus(true)}
             ></div> */}
           </div>
-          <div className="pt-10 bg-white">{children}</div>
+          <div className="pt-10 bg-white">
+            <Suspense>{children}</Suspense>
+          </div>
         </div>
       </div>
     </div>
