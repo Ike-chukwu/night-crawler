@@ -66,7 +66,7 @@ const AnalyticCard = ({
         src={imgLink}
         width={150}
         height={150}
-        className="w-full h-[150]"
+        className="w-[250px] md:w-[400px] h-[150px] mx-auto"
       />
       {linkText && (
         <Link

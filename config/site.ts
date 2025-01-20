@@ -2,7 +2,7 @@ export type SiteConfig = typeof siteConfig;
 
 
 export const siteConfig = {
-    name: "Night Crawler",
+    name: "Nite Crawler",
     description: "An app that monitors events",
     navItems: [
         {
