@@ -41,7 +41,7 @@ const AnalyticCard = ({
         <div className="flex items-center gap-2">
           {icon}
           {/* <UserIcon width="18" height="18" color="black" /> */}
-          <span className="font-bold text-[14px]">{title}</span>
+          <span className="font-bold text-[12px]">{title}</span>
         </div>
         {filter && (
           <Select>
