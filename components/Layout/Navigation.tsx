@@ -224,7 +224,7 @@ export const Sidebar = ({
       ))}
       <MenuItem
         active={false}
-        menu={{ label: "Log out", href: "/" }}
+        menu={{ label: "Log out", href: "/login" }}
         onClick={() => {
           // console.log("clicked");
           LoginService.logOut();
@@ -374,7 +374,7 @@ export const MobileNav = ({
       ))}
       <MenuItem
         active={false}
-        menu={{ label: "Log out", href: "/" }}
+        menu={{ label: "Log out", href: "/login" }}
         onClick={() => {
           // console.log("clicked");
           LoginService.logOut();
