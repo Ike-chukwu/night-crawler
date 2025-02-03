@@ -379,7 +379,7 @@ export const MobileNav = ({
           // console.log("clicked");
           LoginService.logOut();
           queryClient.removeQueries({ type: "all", stale: true });
-          push("/login");
+          push("https://night-crawler-kq2x-9uhd9ke4w-ikechukwus-projects-a31c707f.vercel.app/login");
         }}
         setNavStatus={() => {}}
 
