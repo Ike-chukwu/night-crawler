@@ -229,7 +229,7 @@ export const Sidebar = ({
           // console.log("clicked");
           LoginService.logOut();
           queryClient.removeQueries({ type: "all", stale: true });
-          push("https://night-crawler-kq2x.vercel.app/login");
+          push("/login");
         }}
         setNavStatus={() => {}}
 
@@ -379,7 +379,7 @@ export const MobileNav = ({
           // console.log("clicked");
           LoginService.logOut();
           queryClient.removeQueries({ type: "all", stale: true });
-          push("https://night-crawler-kq2x.vercel.app/login");
+          push("/login");
         }}
         setNavStatus={() => {}}
 
