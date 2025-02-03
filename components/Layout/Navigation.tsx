@@ -1,4 +1,4 @@
-import { UserIcon } from "lucide-react";
+import { LogOutIcon, UserIcon } from "lucide-react";
 import {
   ChartIcon,
   ChevronDownIcon,
@@ -13,6 +13,8 @@ import clsx from "clsx";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { ClassProp } from "class-variance-authority/types";
+import { LoginService } from "@/services/login";
+import { useQueryClient } from "@tanstack/react-query";
 
 type Prop = ClassProp & {};
 
@@ -42,6 +44,12 @@ const Icon = ({ title }: { title: string }) => {
           <PlanIcon width="18" height="18" />
         </div>
       );
+    case "log out":
+      return (
+        <div className="w-4">
+          <LogOutIcon width={20} height={20} />
+        </div>
+      );
   }
 };
 
@@ -50,11 +58,13 @@ const MenuItem = ({
   active,
   navStatus,
   setNavStatus,
+  onClick,
 }: {
   menu: SiteConfig["navItems"][0];
   active: boolean;
   navStatus?: boolean;
   setNavStatus: Dispatch<SetStateAction<boolean>>;
+  onClick?: () => void;
 }) => {
   // if (menu.subMenu) {
   //   return (
@@ -115,7 +125,10 @@ const MenuItem = ({
           "bg-[#7e4ae6] md:bg-[#935eff]": active,
         }
       )}
-      onClick={() => setNavStatus(false)}
+      onClick={() => {
+        setNavStatus(false);
+        onClick?.();
+      }}
     >
       <Icon title={menu.label} />
       {/* <ChartIcon width="17" height="16" /> */}
@@ -165,6 +178,7 @@ export const Sidebar = ({
 }) => {
   const path = usePathname();
   const { push } = useRouter();
+  const queryClient = useQueryClient();
 
   const menus = siteConfig.navItems;
 
@@ -208,6 +222,19 @@ export const Sidebar = ({
           // onMenuExpanded={setActive}
         />
       ))}
+      <MenuItem
+        active={false}
+        menu={{ label: "Log out", href: "/" }}
+        onClick={() => {
+          // console.log("clicked");
+          LoginService.logOut();
+          queryClient.removeQueries({ type: "all", stale: true });
+          push("/login");
+        }}
+        setNavStatus={() => {}}
+
+        // onMenuExpanded={setActive}
+      />
       {/* <div className="py-4 cursor-pointer pl-3 pr-1 flex gap-3 hover:bg-[#935eff] hover:font-bold ease-in duration-300 rounded-md w-full">
         <ChartIcon width="17" height="16" />
         <span className="text-[15px] capitalize text-white">analytics</span>
@@ -299,6 +326,7 @@ export const MobileNav = ({
   const path = usePathname();
   const { push } = useRouter();
   const menus = siteConfig.navItems;
+  const queryClient = useQueryClient();
   // const menus = siteConfig.navItems.filter((item) => {
   //   if (item?.access?.includes(role)) {
   //     if (item?.subMenu) {
@@ -344,6 +372,19 @@ export const MobileNav = ({
           // onMenuExpanded={setActive}
         />
       ))}
+      <MenuItem
+        active={false}
+        menu={{ label: "Log out", href: "/" }}
+        onClick={() => {
+          // console.log("clicked");
+          LoginService.logOut();
+          queryClient.removeQueries({ type: "all", stale: true });
+          push("/login");
+        }}
+        setNavStatus={() => {}}
+
+        // onMenuExpanded={setActive}
+      />
       <CloseIcon
         onClick={() => {
           // console.log("yes");

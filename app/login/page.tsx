@@ -1,12 +1,14 @@
 "use client";
 import FormInput from "@/components/Form/FormInput";
 import { Button } from "@/components/ui/button";
+import { useLogin } from "@/hooks/useLogin";
 import { LoginPayload, loginSchema } from "@/services/login/schema";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 const AuthPage = () => {
   const methods = useForm<LoginPayload>({
@@ -19,9 +21,19 @@ const AuthPage = () => {
   });
 
   const { push } = useRouter();
+  const { login, isSuccess, isLoading, isError } = useLogin({
+    onSuccess: () => {
+      toast.success("Login Successful");
+      push("/");
+    },
+    onError: () => {
+      toast.error("User cannot be logged in!");
+    },
+  });
 
   const onSubmit = (data: LoginPayload) => {
-    console.log(data);
+    // console.log(data);
+    login(data);
   };
 
   return (
@@ -62,9 +74,10 @@ const AuthPage = () => {
               />
               <Button
                 type="submit"
+                disabled={isLoading}
                 className="w-full curved rounded-sm bg-[#7940EC] hover:opacity-90"
               >
-                Login
+                {isLoading ? " Logging in" : "Login"}
               </Button>
             </form>
           </div>

@@ -226,3 +226,33 @@ export const DeleteIcon: React.FC<IconSvgProps> = (props) => (
     />
   </svg>
 );
+export const LogOutIcon: React.FC<IconSvgProps> = (props) => (
+  <svg
+    {...props}
+    viewBox="0 0 20 20"
+    fill="white"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M14.5332 12.1846L16.6665 10.0513L14.5332 7.91797"
+      stroke="white"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <path
+      d="M8.13379 10.0508H16.6088"
+      stroke="white"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <path
+      d="M9.80046 16.6654C6.11712 16.6654 3.13379 14.1654 3.13379 9.9987C3.13379 5.83203 6.11712 3.33203 9.80046 3.33203"
+      stroke="white"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+);

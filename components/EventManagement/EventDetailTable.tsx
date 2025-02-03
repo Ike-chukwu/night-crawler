@@ -7,48 +7,56 @@ import { useRouter } from "next/navigation";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { OptionIcon } from "../icons";
 import Link from "next/link";
-import { EventDetail } from "@/services/event-management/types";
+import { EventDetailInTable } from "@/services/event-management/types";
 import { SearchParams } from "@/constants";
 import NativeModal from "../NativeElements/NativeModal";
+import { useDeleteEvent, useListAllEvents } from "@/hooks/useEventManagement";
+import { toast } from "sonner";
 
-const eventColumnHelper = createColumnHelper<EventDetail>();
+const eventColumnHelper = createColumnHelper<EventDetailInTable>();
 const cellClass = "border-b py-5 border-content2";
 
 const EventDetailTable = () => {
   const router = useRouter();
   const { getQuery, changeQueries } = useRouterQuery();
-
-  const EventDetailsArray = [
-    {
-      id: "1",
-      eventName: "Space Event",
-      eventCategory: "Event Space",
-      country: "U.S.A",
-      eventLocation: "3315 Faith Church Rd, Indian Trail, NC 28079, USA",
-      date: "17-10-24",
-    },
-    {
-      id: "2",
-      eventName: "Post Malone Concert",
-      eventCategory: "Party Promoter",
-      country: "U.S.A",
-      eventLocation: "3315 Faith Church Rd, Indian Trail, NC 28079, USA",
-      date: "17-10-24",
-    },
-    {
-      id: "3",
-      eventName: "Post Malone Concert",
-      eventCategory: "Party Promoter",
-      country: "U.S.A",
-      eventLocation: "3315 Faith Church Rd, Indian Trail, NC 28079, USA",
-      date: "17-10-24",
-    },
-  ];
+  const page = getQuery(SearchParams.PAGE) || 1;
+  const pageSize = 10;
+  const filterString = getQuery(SearchParams.FILTER);
+  const action = getQuery(SearchParams.ACTION) || "";
+  const filterByEmail = getQuery(SearchParams.SEARCHED_TERM) || "";
+  const eventId = getQuery(SearchParams.EVENT_ID) || "";
+  const {
+    events,
+    isLoading,
+    isSuccess,
+    hasNextPage,
+    limit,
+    total,
+    page: currentPositon,
+  } = useListAllEvents(
+    filterString,
+    page.toString(),
+    pageSize.toString(),
+    // filterByEmail
+    "America/New_York"
+  );
+  const {
+    deleteEvent,
+    isError,
+    isPending: isDeletingEvent,
+  } = useDeleteEvent({
+    onSuccess: () => toast.success("Event successfully deleted"),
+    onError: () => toast.error("Event could not be deleted"),
+  });
+  console.log(events);
 
   const EventDetailColumns = [
     eventColumnHelper.display({
       header: "S/N",
-      cell: ({ row }) => row.index + 1,
+      cell: ({ row }) => {
+        const safePageIndex = currentPositon ? currentPositon - 1 : 0;
+        return row.index + 1 + safePageIndex * pageSize;
+      },
       meta: {
         cellProps: {
           className: cellClass,
@@ -56,8 +64,8 @@ const EventDetailTable = () => {
       },
     }),
 
-    eventColumnHelper.accessor("eventName", {
-      header: "Event Name",
+    eventColumnHelper.accessor("title", {
+      header: "Title",
 
       meta: {
         cellProps: {
@@ -65,32 +73,36 @@ const EventDetailTable = () => {
         },
       },
     }),
-    eventColumnHelper.accessor("eventCategory", {
-      header: "Event Category",
+    // eventColumnHelper.accessor("address", {
+    //   header: "Address",
+    //   meta: {
+    //     cellProps: {
+    //       className: cellClass,
+    //     },
+    //   },
+    // }),
+    eventColumnHelper.accessor("createdAt", {
+      header: "Creation Date",
       meta: {
         cellProps: {
           className: cellClass,
         },
       },
-    }),
-    eventColumnHelper.accessor("country", {
-      header: "Country",
-      meta: {
-        cellProps: {
-          className: cellClass,
-        },
+      cell: ({ getValue }) => {
+        const dateString = getValue();
+        const date = new Date(dateString);
+
+        const options: Intl.DateTimeFormatOptions = {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        };
+
+        return date.toLocaleDateString("en-US", options);
       },
     }),
-    eventColumnHelper.accessor("eventLocation", {
-      header: "Event Location",
-      meta: {
-        cellProps: {
-          className: cellClass,
-        },
-      },
-    }),
-    eventColumnHelper.accessor("date", {
-      header: "Date",
+    eventColumnHelper.accessor("organizer.name", {
+      header: "Organizer",
       meta: {
         cellProps: {
           className: cellClass,
@@ -112,7 +124,7 @@ const EventDetailTable = () => {
                 <div className="flex flex-col gap-3">
                   <Link
                     className="capitalize pb-1 border-b-[0.1px] text-[13px]"
-                    href={`/event-management/event/${original?.id}`}
+                    href={`/event-management/event/${original?.eventId}`}
                   >
                     View event
                   </Link>
@@ -122,6 +134,7 @@ const EventDetailTable = () => {
                       // console.log(original.id);
                       changeQueries({
                         [SearchParams.ACTION]: "deleteEvent",
+                        [SearchParams.EVENT_ID]: original?.eventId,
                       });
                     }}
                   >
@@ -141,11 +154,18 @@ const EventDetailTable = () => {
     }),
   ];
 
+  const handlePageChange = (newPageIndex: number) => {
+    changeQueries({ [SearchParams.PAGE]: newPageIndex + 1 });
+  };
+
   const handleCloseDialog = () => {
     //get the id fromm the query and run the delete event api trigger
     // the code below this can be in the onSuccess the way bolu did to show the modal until request is successfful
     //check the kind of action in the url so as to know which endpint to call i.e use if calls here for that
-    changeQueries({ [SearchParams.ACTION]: undefined });
+    if (action == "deleteEvent") {
+      deleteEvent({ eventId });
+    }
+    // changeQueries({ [SearchParams.ACTION]: undefined });
   };
 
   return (
@@ -155,13 +175,13 @@ const EventDetailTable = () => {
           isPaginated
           manualPagination
           columns={EventDetailColumns}
-          data={EventDetailsArray}
-          // isLoading={isLoading}
-          // pageIndex={pageIndex - 1}
-          // pageSize={10}
+          data={events || []}
+          isLoading={isLoading}
+          pageIndex={currentPositon && currentPositon - 1}
+          pageSize={10}
           // paginationProps={{ className: "!mt-0" }}
-          // rowCount={rowCount}
-          // onPageChange={handlePageChange}
+          rowCount={total}
+          onPageChange={handlePageChange}
         />
       </section>
       <NativeModal

@@ -1,8 +1,28 @@
 import React from "react";
+import { ClipLoader } from "react-spinners";
 
-const Header = () => {
+type Props = {
+  isLoading: boolean;
+  data?: DashboardStats;
+};
+
+const Header = ({ isLoading, data }: Props) => {
   return (
     <div className="flex flex-col md:flex-row justify-between gap-1 md:gap-10 md:items-center">
+      {/* {data &&
+        Object.entries(data).map(([key, value]) => (
+          <div className="flex w-full justify-between md:w-auto md:gap-3 items-center">
+            <div className="flex items-center gap-2 md:flex">
+              <div className="w-1 h-1 bg-black "></div>
+              <span className="text-[12px] font-bold text-nowrap capitalize">
+                {isLoading ? <ClipLoader /> : key}
+              </span>
+            </div>
+            <div className="w-[32px] text-[12px] h-[28px] flex justify-center items-center  border-[#D3D3D3] border-[0.1px] rounded-lg font-bold">
+              {isLoading ? <ClipLoader /> : value}
+            </div>
+          </div>
+        ))} */}
       <div className="flex w-full justify-between md:w-auto md:gap-3 items-center">
         <div className="flex items-center gap-2 md:flex">
           <div className="w-1 h-1 bg-black "></div>
@@ -11,7 +31,7 @@ const Header = () => {
           </span>
         </div>
         <div className="w-[32px] text-[12px] h-[28px] flex justify-center items-center  border-[#D3D3D3] border-[0.1px] rounded-lg font-bold">
-          86
+          {isLoading ? <ClipLoader size={10} /> : data?.totalUsers}
         </div>
       </div>
       <div className="flex w-full justify-between md:w-auto md:gap-3 items-center">
@@ -22,7 +42,7 @@ const Header = () => {
           </span>
         </div>
         <div className="w-[32px] text-[12px] h-[28px] flex justify-center items-center  border-[#D3D3D3] border-[0.1px] rounded-lg font-bold">
-          86
+          {isLoading ? <ClipLoader size={10} /> : data?.subscriptions}
         </div>
       </div>
       <div className="flex w-full justify-between md:w-auto md:gap-3 items-center">
@@ -31,7 +51,7 @@ const Header = () => {
           <span className="text-[12px] font-bold capitalize">Events</span>
         </div>
         <div className="w-[32px] text-[12px] h-[28px] flex justify-center items-center  border-[#D3D3D3] border-[0.1px] rounded-lg font-bold">
-          86
+          {isLoading ? <ClipLoader size={10} /> : data?.events}
         </div>
       </div>
     </div>

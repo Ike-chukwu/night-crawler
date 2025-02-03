@@ -30,6 +30,7 @@ const NativeModal = ({
 }: Props) => {
   const { getQuery, changeQueries } = useRouterQuery();
   const action = getQuery(SearchParams.ACTION);
+  const userId = getQuery(SearchParams.USER_ID) || "";
 
   const modalLook: () => {
     title: string;
@@ -88,7 +89,16 @@ const NativeModal = ({
   }, [action]);
 
   return (
-    <Dialog open={!!action} onOpenChange={handleCloseDialog}>
+    <Dialog
+      open={!!action}
+      onOpenChange={() => {
+        changeQueries({
+          [SearchParams.ACTION]: undefined,
+          [SearchParams.USER_ID]: undefined,
+          [SearchParams.EVENT_ID]: undefined,
+        });
+      }}
+    >
       {/* <DialogTrigger asChild>
         <Button variant="outline">Edit Profile</Button>
       </DialogTrigger> */}
@@ -114,7 +124,11 @@ const NativeModal = ({
           <div className="flex gap-3">
             <Button
               onClick={() => {
-                changeQueries({ [SearchParams.ACTION]: undefined });
+                changeQueries({
+                  [SearchParams.ACTION]: undefined,
+                  [SearchParams.USER_ID]: undefined,
+                  [SearchParams.EVENT_ID]: undefined,
+                });
               }}
               className="capitalize bg-transparent text-black"
               type="button"
@@ -131,7 +145,17 @@ const NativeModal = ({
                     "text-red-500"
                   : "text-black")
               }
-              onClick={handleCloseDialog}
+              onClick={() => {
+                handleCloseDialog();
+                console.log(`${modalLook().btnText}`);
+
+                changeQueries({
+                  [SearchParams.ACTION]: undefined,
+                  [SearchParams.USER_ID]: undefined,
+                  [SearchParams.EVENT_ID]: undefined,
+                });
+                // changeQueries({ [SearchParams.USER_ID]: undefined });
+              }}
               type="submit"
             >
               {modalLook().btnText}

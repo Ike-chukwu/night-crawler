@@ -17,6 +17,8 @@ import { useRouterQuery } from "@/app/hooks/useRouterQuery";
 import { SearchParams } from "@/constants";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { useSendMessage } from "@/hooks/useUserManagement";
+import { toast } from "sonner";
 
 type Props = {
   handleCloseDialog: () => void;
@@ -39,11 +41,36 @@ const UserMessageModal = ({ handleCloseDialog }: Props) => {
     defaultValues: { message: "" },
   });
   const { getQuery, changeQueries } = useRouterQuery();
+  const userId = getQuery(SearchParams.USER_ID) || "";
   const action = getQuery(SearchParams.ACTION);
-  const onSubmit = (data: { message: string }) => console.log(data);
+  const {
+    sendUserMessage,
+    isPending: isSendingMessage,
+    isError: isSendingMessageError,
+  } = useSendMessage({
+    onSuccess: () =>
+      toast.success("Message has been successfully sent to the user!"),
+    onError: () => toast.error("Message could not be sent to the user!"),
+  });
+  const onSubmit = (data: { message: string }) => {
+    sendUserMessage({ userId, message: data.message });
+    changeQueries({
+      [SearchParams.ACTION]: undefined,
+      [SearchParams.USER_ID]: undefined,
+    });
+    reset();
+  };
 
   return (
-    <Dialog open={action === "sendMessage"} onOpenChange={handleCloseDialog}>
+    <Dialog
+      open={action === "sendMessage"}
+      onOpenChange={() => {
+        changeQueries({
+          [SearchParams.ACTION]: undefined,
+          [SearchParams.USER_ID]: undefined,
+        });
+      }}
+    >
       {/* <DialogTrigger asChild>
         <Button variant="outline">Edit Profile</Button>
       </DialogTrigger> */}
@@ -69,7 +96,10 @@ const UserMessageModal = ({ handleCloseDialog }: Props) => {
             <div className="mt-4">
               <Button
                 onClick={() => {
-                  changeQueries({ [SearchParams.ACTION]: undefined });
+                  changeQueries({
+                    [SearchParams.ACTION]: undefined,
+                    [SearchParams.USER_ID]: undefined,
+                  });
                   reset();
                 }}
                 type="button"

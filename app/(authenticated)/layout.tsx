@@ -2,6 +2,7 @@
 import { HamburgerIcon } from "@/components/icons";
 import Header from "@/components/Layout/Header";
 import { MobileNav, Sidebar } from "@/components/Layout/Navigation";
+import { useSummary } from "@/hooks/useDashboard";
 import Image from "next/image";
 import React, { Suspense, useState } from "react";
 
@@ -11,6 +12,14 @@ export default function AuthenticatedLayout({
   children: React.ReactNode;
 }) {
   const [navStatus, setNavStatus] = useState(false);
+  const { stats, isLoading } = useSummary();
+
+  const formattedDate = new Date(Date.now()).toLocaleDateString("en-US", {
+    weekday: "long",
+    day: "2-digit",
+    month: "long",
+    year: "numeric",
+  });
 
   return (
     <div className="bg-white md:bg-[#7940EC] px-4 md:px-6 py-2 flex min-h-[100vh]">
@@ -42,10 +51,10 @@ export default function AuthenticatedLayout({
                 {/* <div className="w-3 h-3 bg-black block md:hidden"></div> */}
               </div>
               <span className="text-[13px] text-[#ababab] font-bold capitalize">
-                Tuesday, 24 October, 2024
+                {formattedDate}
               </span>
             </div>
-            <Header />
+            <Header isLoading={isLoading} data={stats} />
             <HamburgerIcon
               width="40"
               height="20"

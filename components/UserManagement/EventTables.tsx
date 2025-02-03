@@ -1,53 +1,45 @@
 "use client";
 import { useRouterQuery } from "@/hooks/useRouterQuery";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import React from "react";
 import Table from "../ui/Table";
 import { createColumnHelper } from "@tanstack/react-table";
-import { Event, User } from "@/services/user-management/types";
+import { UserEvent } from "@/services/user-management/types";
 import { DeleteIcon, OptionIcon } from "../icons";
 import { SearchParams } from "@/constants";
 import NativeModal from "../NativeElements/NativeModal";
+import { useGetUserEvent } from "@/hooks/useUserManagement";
 
-const eventColumnHelper = createColumnHelper<Event>();
+const eventColumnHelper = createColumnHelper<UserEvent>();
 const cellClass = "border-b py-5 border-content2";
 
 const EventTable = () => {
   const router = useRouter();
   const { getQuery, changeQueries } = useRouterQuery();
   const actionFromUrl = getQuery(SearchParams.ACTION);
+  const page = getQuery(SearchParams.PAGE) || 1;
+  const pageSize = 10;
+  const filterString = getQuery(SearchParams.FILTER) || "";
+  const action = getQuery(SearchParams.ACTION) || "";
+  const filterByEmail = getQuery(SearchParams.SEARCHED_TERM) || "";
+  const userId = getQuery(SearchParams.USER_ID) || "";
   console.log(actionFromUrl);
+  const { user } = useParams();
+  const userIdFromUrl = user?.toString() || "";
 
-  const eventsArray = [
-    {
-      id: "1",
-      eventName: "Party",
-      country: "U.S.A",
-      eventLocation: "3315 Faith Church Rd, Indian Trail, NC 28079, USA",
-      date: "17-10-24",
-    },
-    {
-      id: "2",
-      eventName: "Party",
-      country: "U.S.A",
-      eventLocation: "3315 Faith Church Rd, Indian Trail, NC 28079, USA",
-      date: "17-10-24",
-    },
-    {
-      id: "3",
-      eventName: "Party",
-      country: "U.S.A",
-      eventLocation: "3315 Faith Church Rd, Indian Trail, NC 28079, USA",
-      date: "17-10-24",
-    },
-    {
-      id: "4",
-      eventName: "Party",
-      country: "U.S.A",
-      eventLocation: "3315 Faith Church Rd, Indian Trail, NC 28079, USA",
-      date: "17-10-24",
-    },
-  ];
+  const {
+    events,
+    isLoading,
+    limit,
+    total,
+    page: currentPositon,
+  } = useGetUserEvent(
+    userIdFromUrl,
+    page.toString(),
+    pageSize.toString(),
+    filterByEmail
+    // filterString,
+  );
 
   const EventColumns = [
     eventColumnHelper.display({
@@ -60,8 +52,8 @@ const EventTable = () => {
       },
     }),
 
-    eventColumnHelper.accessor("eventName", {
-      header: "Event Name",
+    eventColumnHelper.accessor("title", {
+      header: "Title",
 
       meta: {
         cellProps: {
@@ -69,16 +61,36 @@ const EventTable = () => {
         },
       },
     }),
-    eventColumnHelper.accessor("eventLocation", {
-      header: "Event Location",
+    eventColumnHelper.accessor("createdAt", {
+      header: "Date Created",
+      meta: {
+        cellProps: {
+          className: cellClass,
+        },
+      },
+      cell: ({ getValue }) => {
+        const dateString = getValue();
+        const date = new Date(dateString);
+
+        const options: Intl.DateTimeFormatOptions = {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        };
+
+        return date.toLocaleDateString("en-US", options);
+      },
+    }),
+    eventColumnHelper.accessor("description", {
+      header: "Description",
       meta: {
         cellProps: {
           className: cellClass,
         },
       },
     }),
-    eventColumnHelper.accessor("date", {
-      header: "Date",
+    eventColumnHelper.accessor("address", {
+      header: "Address",
       meta: {
         cellProps: {
           className: cellClass,
@@ -148,6 +160,10 @@ const EventTable = () => {
     }),
   ];
 
+  const handlePageChange = (newPageIndex: number) => {
+    changeQueries({ [SearchParams.PAGE]: newPageIndex + 1 });
+  };
+
   const handleCloseDialog = () => {
     //get the id fromm the query and run the delete event api trigger
     // the code below this can be in the onSuccess the way bolu did to show the modal until request is successfful
@@ -162,13 +178,13 @@ const EventTable = () => {
           isPaginated
           manualPagination
           columns={EventColumns}
-          data={eventsArray}
-          // isLoading={isLoading}
-          // pageIndex={pageIndex - 1}
-          // pageSize={10}
+          data={events || []}
+          isLoading={isLoading}
+          pageIndex={currentPositon && currentPositon - 1}
+          pageSize={10}
           // paginationProps={{ className: "!mt-0" }}
-          // rowCount={rowCount}
-          // onPageChange={handlePageChange}
+          rowCount={total}
+          onPageChange={handlePageChange}
         />
       </section>
       <NativeModal

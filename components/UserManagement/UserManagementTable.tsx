@@ -12,57 +12,65 @@ import { Button } from "../ui/button";
 import { SearchParams } from "@/constants";
 import NativeModal from "../NativeElements/NativeModal";
 import UserMessageModal from "./UserMessageModal";
+import {
+  useDeleteUser,
+  useSuspendUser,
+  useUserManagement,
+} from "@/hooks/useUserManagement";
+import { toast } from "sonner";
 
 const userColumnHelper = createColumnHelper<User>();
 const cellClass = "border-b py-5 border-content2";
 
 const UserManagementTable = () => {
-  const router = useRouter();
   const { getQuery, changeQueries } = useRouterQuery();
-
-  const usersArray = [
-    {
-      id: "1",
-      userMail: "mojolarichards@gmail.com",
-      country: "U.S.A",
-      phoneNumber: "+1 (923) 455 6572",
-      userRole: "Advertiser",
-    },
-    {
-      id: "2",
-      userMail: "mojolarichards@gmail.com",
-      country: "U.S.A",
-      phoneNumber: "+1 (923) 455 6572",
-      userRole: "Advertiser",
-    },
-    {
-      id: "3",
-      userMail: "mojolarichards@gmail.com",
-      country: "U.S.A",
-      phoneNumber: "+1 (923) 455 6572",
-      userRole: "Advertiser",
-    },
-    {
-      id: "4",
-      userMail: "mojolarichards@gmail.com",
-      country: "U.S.A",
-      phoneNumber: "+1 (923) 455 6572",
-      userRole: "Advertiser",
-    },
-  ];
+  const page = getQuery(SearchParams.PAGE) || 1;
+  const pageSize = 10;
+  const filterString = getQuery(SearchParams.FILTER) || "";
+  const action = getQuery(SearchParams.ACTION) || "";
+  const filterByEmail = getQuery(SearchParams.SEARCHED_TERM) || "";
+  const userId = getQuery(SearchParams.USER_ID) || "";
+  const {
+    users,
+    isLoading,
+    isSuccess,
+    hasNextPage,
+    limit,
+    total,
+    page: currentPositon,
+  } = useUserManagement(
+    filterString,
+    page.toString(),
+    pageSize.toString(),
+    filterByEmail
+  );
+  const {
+    suspendUser,
+    isPending: isSuspendingUser,
+    isError: isSuspendUserError,
+  } = useSuspendUser({
+    onSuccess: () => toast.success("User has been suspended!"),
+    onError: () => toast.error("User cannot be suspended!"),
+  });
+  const {
+    deleteUser,
+    isPending: isDeletingUser,
+    isError: isDeleteUserError,
+  } = useDeleteUser({
+    onSuccess: () => toast.success("User has been deleted!"),
+    onError: () => toast.error("User could not be deleted!"),
+  });
 
   const UserColumns = [
     userColumnHelper.display({
       header: "S/N",
-      cell: ({ row }) => row.index + 1,
-      meta: {
-        cellProps: {
-          className: cellClass,
-        },
+      cell: ({ row }) => {
+        const safePageIndex = currentPositon ? currentPositon - 1 : 0;
+        return row.index + 1 + safePageIndex * pageSize;
       },
     }),
 
-    userColumnHelper.accessor("userMail", {
+    userColumnHelper.accessor("email", {
       header: "User Mail",
 
       meta: {
@@ -71,15 +79,7 @@ const UserManagementTable = () => {
         },
       },
     }),
-    userColumnHelper.accessor("country", {
-      header: "Country",
-      meta: {
-        cellProps: {
-          className: cellClass,
-        },
-      },
-    }),
-    userColumnHelper.accessor("phoneNumber", {
+    userColumnHelper.accessor("phone", {
       header: "Phone Number",
       meta: {
         cellProps: {
@@ -87,8 +87,8 @@ const UserManagementTable = () => {
         },
       },
     }),
-    userColumnHelper.accessor("userRole", {
-      header: "User Role",
+    userColumnHelper.accessor("userType", {
+      header: "User Type",
       meta: {
         cellProps: {
           className: cellClass,
@@ -110,14 +110,17 @@ const UserManagementTable = () => {
                 <div className="flex flex-col gap-3">
                   <Link
                     className="capitalize pb-1 border-b-[0.1px] transition-all ease-in hover:font-bold text-[13px]"
-                    href={`/user-management/user/${original?.id}`}
+                    href={`/user-management/user/${original?.userId}`}
                   >
                     manage user events
                   </Link>
                   <p
                     className="capitalize cursor-pointer pb-1 border-b-[0.1px] transition-all ease-in hover:font-bold text-[13px]"
                     onClick={() =>
-                      changeQueries({ [SearchParams.ACTION]: "sendMessage" })
+                      changeQueries({
+                        [SearchParams.ACTION]: "sendMessage",
+                        [SearchParams.USER_ID]: original.userId,
+                      })
                     }
                   >
                     send user a message
@@ -128,6 +131,7 @@ const UserManagementTable = () => {
                       // console.log(original.id);
                       changeQueries({
                         [SearchParams.ACTION]: "suspendUser",
+                        [SearchParams.USER_ID]: original.userId,
                       });
                     }}
                   >
@@ -139,6 +143,7 @@ const UserManagementTable = () => {
                       // console.log(original.id);
                       changeQueries({
                         [SearchParams.ACTION]: "deleteUser",
+                        [SearchParams.USER_ID]: original.userId,
                       });
                     }}
                   >
@@ -158,11 +163,19 @@ const UserManagementTable = () => {
     }),
   ];
 
+  const handlePageChange = (newPageIndex: number) => {
+    changeQueries({ [SearchParams.PAGE]: newPageIndex + 1 });
+  };
+
   const handleCloseDialog = () => {
     //get the id fromm the query and run the delete event api trigger
     // the code below this can be in the onSuccess the way bolu did to show the modal until request is successfful
     //check the kind of action in the url so as to know which endpint to call i.e use if calls here for that
-    changeQueries({ [SearchParams.ACTION]: undefined });
+    if (action == "suspendUser") {
+      suspendUser(userId);
+    } else if (action == "deleteUser") {
+      deleteUser(userId);
+    }
   };
 
   // for message modal
@@ -177,13 +190,13 @@ const UserManagementTable = () => {
           isPaginated
           manualPagination
           columns={UserColumns}
-          data={usersArray}
-          // isLoading={isLoading}
-          // pageIndex={pageIndex - 1}
-          // pageSize={10}
+          data={users || []}
+          isLoading={isLoading}
+          pageIndex={currentPositon && currentPositon - 1}
+          pageSize={10}
           // paginationProps={{ className: "!mt-0" }}
-          // rowCount={rowCount}
-          // onPageChange={handlePageChange}
+          rowCount={total}
+          onPageChange={handlePageChange}
         />
       </section>
       <NativeModal

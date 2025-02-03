@@ -20,6 +20,7 @@ type Props = {
   linkText?: string;
   filter?: true;
   href?: string;
+  graph?: ReactElement;
 };
 
 const AnalyticCard = ({
@@ -29,9 +30,10 @@ const AnalyticCard = ({
   linkText,
   filter,
   href,
+  graph,
 }: Props) => {
   return (
-    <div className="py-4 px-4 flex flex-col justify-between h-[350px] rounded-md border-[#c5adf7] border-[0.1px]">
+    <div className="py-4 px-4 flex flex-col justify-between h-[350px] md:h-[450px] rounded-md border-[#c5adf7] border-[0.1px]">
       <div
         className={clsx("flex w-full justify-between", {
           // "items-center": !filter,
@@ -61,13 +63,16 @@ const AnalyticCard = ({
           </Select>
         )}
       </div>
-      <Image
+      {/* <Image
         alt="barChart"
         src={imgLink}
         width={150}
         height={150}
         className="w-[250px] md:w-[400px] h-[150px] mx-auto"
-      />
+      /> */}
+      <div className="">
+        {graph}
+      </div>
       {linkText && (
         <Link
           href={href || ""}
