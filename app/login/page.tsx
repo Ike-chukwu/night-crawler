@@ -41,13 +41,8 @@ const AuthPage = () => {
       <div className="w-full xl:w-[50%] min-h-screen px-4 ">
         <FormProvider {...methods}>
           <div className="min-h-screen  md:px-0 flex flex-col justify-center items-center gap-8 ">
-            <Image
-              alt="logo"
-              src="/logo.png"
-              width={400}
-              height={200}
-              className="w-[42px] h-[38px]"
-            />
+            <img src="/logo.png" alt="logo" className="w-[42px] h-[38px]" />
+            {/* < */}
             <div className="text-center">
               <p className="text-2xl capitalize font-bold text-[#7940EC]">
                 login
