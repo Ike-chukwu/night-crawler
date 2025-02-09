@@ -1,6 +1,12 @@
-type PlanDetail = {
-    plan: string
-    price: string
-    subscriber: string
-    status: string
+export type PlanDetail = {
+    name: string,
+    price: number,
+    planId: string,
+    subscribers: number,
+    active: boolean
 }
+
+export type PaginatedDataForPlans<T> = {
+    total: number;
+    plans: T[];
+};

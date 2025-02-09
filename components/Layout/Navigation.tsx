@@ -1,9 +1,10 @@
-import { LogOutIcon, UserIcon } from "lucide-react";
+// import { LogOutIcon, UserIcon } from "lucide-react";
 import {
   ChartIcon,
   ChevronDownIcon,
   CloseIcon,
   EventIcon,
+  LogOutIcon,
   PlanIcon,
   UserIconInSidenav,
 } from "../icons";
@@ -224,7 +225,7 @@ export const Sidebar = ({
       ))}
       <MenuItem
         active={false}
-        menu={{ label: "Log out", href: "/" }}
+        menu={{ label: "Log out", href: "/login" }}
         onClick={() => {
           // console.log("clicked");
           LoginService.logOut();
@@ -374,12 +375,12 @@ export const MobileNav = ({
       ))}
       <MenuItem
         active={false}
-        menu={{ label: "Log out", href: "/" }}
+        menu={{ label: "Log out", href: "/login" }}
         onClick={() => {
           // console.log("clicked");
           LoginService.logOut();
           queryClient.removeQueries({ type: "all", stale: true });
-          push("https://night-crawler-kq2x-9uhd9ke4w-ikechukwus-projects-a31c707f.vercel.app/login");
+          push("/login");
         }}
         setNavStatus={() => {}}
 

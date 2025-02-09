@@ -1,4 +1,5 @@
 "use client";
+import AttendeeTable from "@/components/EventManagement/AttendeeTable";
 import { BackIcon } from "@/components/icons";
 import NativeSelect from "@/components/NativeElements/NativeSelect";
 import EventTable from "@/components/UserManagement/EventTables";
@@ -25,44 +26,95 @@ const ManageEvent = () => {
           <p className="text-[15px] font-bold capitalize">Back to events</p>
         </Link>
       </div>
-      <div className="flex flex-col gap-4 py-8">
-        <p className="text-[16px] font-bold text-center">
-          More details about {currentEvent?.title}
-        </p>
-        <div className="flex flex-col gap-3">
-          <p>Event Category :{currentEvent?.category}</p>
-          <p>Event Description :{currentEvent?.description}</p>
-          <p>Event Location :{currentEvent?.location}</p>
-          <p>Minimum Age :{currentEvent?.minimumAge}</p>
-          <p>Notification time :{currentEvent?.notificationTime}</p>
-          <p>Web link :{currentEvent?.weblink}</p>
-          <p>
-            Days :
-            {`${currentEvent?.date.startDate}` +
-              " " +
-              "-" +
-              " " +
-              `${currentEvent?.date.endDate}`}
-          </p>
-          <p>
-            Days :
-            {`${currentEvent?.date.startDate}` +
-              " " +
-              "-" +
-              " " +
-              `${currentEvent?.date.endDate}`}
-          </p>
+      {isEventLoading ? (
+        <div className="flex w-full items-center h-[calc(100vh-400px)] justify-center">
+          <ClipLoader size={100} />
         </div>
-      </div>
-      {/* <div className="md:w-[700px] py-14">
-        <Image
-          src="/eventGraph.jpg"
-          width={400}
-          height={400}
-          className="w-full"
-          alt="image of event graph"
-        />
-      </div> */}
+      ) : (
+        <>
+          <div className="flex flex-col 2xl:flex-row rounded-md mt-8 border-[0.1px]  ">
+            <div className="flex 2xl:w-[400px] flex-col gap-3 px-4 2xl:border-r-[0.1px] py-10 items-center justify-center">
+              <img
+                alt="organizer image"
+                width={200}
+                height={200}
+                src={currentEvent?.organizer.photo}
+                className="w-[200px] h-[200px] rounded-full"
+              />
+              <p className="text-[15px] font-bold">
+                {currentEvent?.organizer.name}
+              </p>
+            </div>
+            <div className="flex w-full 2xl:flex-1 gap-7 flex-col md:flex-row py-10 px-4 justify-between xl:justify-start xl:gap-14 md:items-center">
+              <img
+                alt="event image"
+                width={200}
+                height={200}
+                src={currentEvent?.organizer.photo}
+                className="w-[300px] h-[300px] self-center md:self-start"
+              />
+              <div className="grid grid-cols-2 gap-8 md:w-[50%]">
+                <div className="flex flex-col gap-1">
+                  <p className="text-[13px] font-bold">{currentEvent?.title}</p>
+                  <p className="text-[13px] font-light capitalize  ">Title</p>
+                </div>
+                <div className="flex flex-col gap-1">
+                  <p className="text-[13px] font-bold">
+                    {currentEvent?.time.start} - {currentEvent?.time.end}{" "}
+                  </p>
+                  <p className="text-[13px] font-light capitalize  ">Time</p>
+                </div>
+                <div className="flex flex-col gap-1">
+                  <p className="text-[13px] font-bold">
+                    {" "}
+                    {`${currentEvent?.date.startDate}` +
+                      " " +
+                      "-" +
+                      " " +
+                      `${currentEvent?.date.endDate}`}
+                  </p>
+                  <p className="text-[13px] font-light capitalize">Days</p>
+                </div>
+                <div className="flex flex-col gap-1">
+                  <p className="text-[13px] font-bold">
+                    {currentEvent?.category}
+                  </p>
+                  <p className="text-[13px] font-light capitalize">Category</p>
+                </div>
+                {/* <div className="flex flex-col gap-1">
+                  <p className="text-[13px] font-bold">
+                    {(currentEvent?.location)}
+                  </p>
+                  <p className="text-[13px] font-light capitalize">location</p>
+                </div> */}
+                <div className="flex flex-col gap-1">
+                  <p className="text-[13px] font-bold">
+                    {currentEvent?.minimumAge}
+                  </p>
+                  <p className="text-[13px] font-light capitalize">
+                    minimum age
+                  </p>
+                </div>
+                <div className="flex flex-col gap-1">
+                  <Link
+                    className="text-[13px] font-bold"
+                    href={currentEvent?.weblink || ""}
+                  >
+                    {currentEvent?.weblink}
+                  </Link>
+                  <p className="text-[13px] font-light capitalize">
+                    event link
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <AttendeeTable
+            data={currentEvent?.attendees || []}
+            isLoading={isEventLoading}
+          />
+        </>
+      )}
     </div>
   );
 };

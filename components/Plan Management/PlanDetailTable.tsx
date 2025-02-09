@@ -7,17 +7,36 @@ import { useRouter } from "next/navigation";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { OptionIcon } from "../icons";
 import Link from "next/link";
-import { PlanDetail } from "@/services/plan-management";
 import { SearchParams } from "@/constants";
 import NativeModal from "../NativeElements/NativeModal";
+import { PlanDetail } from "@/services/plan-management/types";
+import { useGetAllPlans, useToggleStatus } from "@/hooks/usePlans";
+import { toast } from "sonner";
 
 const planColumnHelper = createColumnHelper<PlanDetail>();
 const cellClass = "border-b py-5 border-content2";
+export const defaultCellClass = "border-t border-content2 px-2";
 
 const PlanDetailTable = () => {
   const router = useRouter();
   const { getQuery, changeQueries } = useRouterQuery();
+  const {
+    toggleStatus,
+    isSuccess: isStatusSuccess,
+    isError: isStatusError,
+    isPending: isTogglingStatus,
+  } = useToggleStatus({
+    onSuccess: () => toast.success("Status successfully updated"),
+    onError: () => toast.error("Status failed to update"),
+  });
+  const page = getQuery(SearchParams.PAGE) || 1;
 
+  const {
+    plans,
+    isLoading: isLoadingPlans,
+    isSuccess,
+    isError,
+  } = useGetAllPlans();
   const PlanDetailsArray = [
     {
       id: "1",
@@ -60,8 +79,8 @@ const PlanDetailTable = () => {
       },
     }),
 
-    planColumnHelper.accessor("plan", {
-      header: "Plan",
+    planColumnHelper.accessor("name", {
+      header: "Name",
 
       meta: {
         cellProps: {
@@ -69,20 +88,31 @@ const PlanDetailTable = () => {
         },
       },
     }),
-    planColumnHelper.accessor("subscriber", {
-      header: "Subscriber",
+    planColumnHelper.accessor("price", {
+      header: "Price",
       meta: {
         cellProps: {
           className: cellClass,
         },
       },
     }),
-    planColumnHelper.accessor("status", {
-      header: "Status",
+    planColumnHelper.accessor("subscribers", {
+      header: "Subscribers",
       meta: {
         cellProps: {
           className: cellClass,
         },
+      },
+    }),
+
+    planColumnHelper.accessor("active", {
+      header: "Status",
+      meta: {
+        cellProps: { className: defaultCellClass },
+        headerProps: { className: defaultCellClass },
+      },
+      cell: ({ row: { original } }) => {
+        return <span>{original.active ? "Active" : "Inactive"}</span>;
       },
     }),
     planColumnHelper.display({
@@ -102,6 +132,16 @@ const PlanDetailTable = () => {
                     className="capitalize cursor-pointer pb-1 border-b-[0.1px] text-[13px]"
                     onClick={() => {
                       // console.log(original.id);
+                      toggleStatus(original.planId);
+                    }}
+                    // href={`/event-management/event/${original?.id}`}
+                  >
+                    Toggle Plan Status
+                  </p>
+                  {/* <p
+                    className="capitalize cursor-pointer pb-1 border-b-[0.1px] text-[13px]"
+                    onClick={() => {
+                      // console.log(original.id);
                       changeQueries({
                         [SearchParams.ACTION]: "deactivatePlan",
                       });
@@ -109,8 +149,8 @@ const PlanDetailTable = () => {
                     // href={`/event-management/event/${original?.id}`}
                   >
                     Deactivate Plan
-                  </p>
-                  <p
+                  </p> */}
+                  {/* <p
                     className="capitalize cursor-pointer text-red-500 pb-1 border-b-[0.1px] text-[13px]"
                     onClick={() => {
                       // console.log(original.id);
@@ -120,7 +160,7 @@ const PlanDetailTable = () => {
                     }}
                   >
                     Delete Plan
-                  </p>
+                  </p> */}
                 </div>
               </PopoverContent>
             </Popover>
@@ -145,15 +185,15 @@ const PlanDetailTable = () => {
     <div className={"flex flex-col items-center gap-7 mt-6 w-full"}>
       <section className="border-bottom border-content2 w-full rounded-lg ">
         <Table
-          isPaginated
-          manualPagination
+          // isPaginated
+          // manualPagination
           columns={PlanDetailColumns}
-          data={PlanDetailsArray}
-          // isLoading={isLoading}
-          // pageIndex={pageIndex - 1}
-          // pageSize={10}
+          data={plans || []}
+          isLoading={isLoadingPlans}
+          pageIndex={1}
+          pageSize={5}
           // paginationProps={{ className: "!mt-0" }}
-          // rowCount={rowCount}
+          rowCount={5}
           // onPageChange={handlePageChange}
         />
       </section>
