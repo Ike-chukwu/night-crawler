@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import React from "react";
 import { useRouterQuery } from "@/app/hooks/useRouterQuery";
 import { SearchParams } from "@/constants";
+import AddPlanModal from "@/components/Plan Management/AddPlanModal";
 
 const PlanManagementPage = () => {
   const { getQuery, changeQueries } = useRouterQuery();
@@ -27,14 +28,15 @@ const PlanManagementPage = () => {
         />
         <Button
           onClick={() =>
-            changeQueries({ [SearchParams.FORM_ACTION]: "addUser" })
+            changeQueries({ [SearchParams.FORM_ACTION]: "addPlan" })
           }
           className="text-[14px] bg-[#7940EC] capitalize "
         >
           add new plan
         </Button>
       </div>
-      <AddUserModal handleCloseDialog={handleCloseDialog} />
+      <AddPlanModal handleCloseDialog={handleCloseDialog} />
+      {/* <AddUserModal handleCloseDialog={handleCloseDialog} /> */}
       <PlanDetailTable />
     </div>
   );

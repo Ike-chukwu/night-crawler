@@ -1,9 +1,10 @@
-import { LogOutIcon, UserIcon } from "lucide-react";
+// import { LogOutIcon, UserIcon } from "lucide-react";
 import {
   ChartIcon,
   ChevronDownIcon,
   CloseIcon,
   EventIcon,
+  LogOutIcon,
   PlanIcon,
   UserIconInSidenav,
 } from "../icons";
