@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { toast } from "sonner";
+import Logo from "./../../public/logo.png";
 
 const AuthPage = () => {
   const methods = useForm<LoginPayload>({
@@ -41,8 +42,16 @@ const AuthPage = () => {
       <div className="w-full xl:w-[50%] min-h-screen px-4 ">
         <FormProvider {...methods}>
           <div className="min-h-screen  md:px-0 flex flex-col justify-center items-center gap-8 ">
-            <img src="/logo.png" alt="logo" className="w-[42px] h-[38px]" />
-            {/* < */}
+            {/* <img src="/logo.png" alt="logo" /> */}
+
+            <Image
+              alt="Logo"
+              src={Logo}
+              className="w-[42px] h-[38px]"
+              width={40}
+              height={40}
+            />
+
             <div className="text-center">
               <p className="text-2xl capitalize font-bold text-[#7940EC]">
                 login
