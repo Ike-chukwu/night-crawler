@@ -20,7 +20,7 @@ const EventManagementPage = () => {
 
   useEffect(() => {
     changeQueries({
-      [SearchParams.SEARCHED_TERM]: debouncedValue,
+      [SearchParams.SEARCHED_TERM]: debouncedValue || undefined,
       [SearchParams.PAGE]: 1,
     });
   }, [debouncedValue]);
@@ -38,8 +38,8 @@ const EventManagementPage = () => {
       <div className="flex justify-between md:items-center md:flex-row flex-col md:gap-0 gap-3">
         <Input
           className="w-full md:w-[300px]"
-          placeholder="Search by user mail"
-          value={inputValue || undefined}
+          placeholder="Search by event by name"
+          value={inputValue || ""}
           onChange={handleInputChange}
         />
         <div className="flex justify-between md:justify-end w-full items-center md:gap-2">

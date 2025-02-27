@@ -1,5 +1,6 @@
 import { UserManagementService } from "@/services/user-management"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+import { useRouter } from "next/navigation"
 
 
 export const useUserManagement = (userType: string, page: string, limit: string, filterByEmail: string) => {
@@ -22,6 +23,7 @@ export const useUserManagement = (userType: string, page: string, limit: string,
 
 
 export const useSuspendUser = ({ onSuccess, onError }: { onSuccess?: () => void; onError?: () => void }) => {
+    const { push } = useRouter()
     const queryClient = useQueryClient()
     const { mutate, isPending, isSuccess, isError } = useMutation({
         mutationFn: (userId: string) => UserManagementService.suspendUser(userId),
@@ -29,6 +31,7 @@ export const useSuspendUser = ({ onSuccess, onError }: { onSuccess?: () => void;
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["getAllUsers"] })
             onSuccess?.()
+            push("/user-management")
         },
         onError: () => {
             onError?.()
@@ -43,12 +46,14 @@ export const useSuspendUser = ({ onSuccess, onError }: { onSuccess?: () => void;
 
 export const useDeleteUser = ({ onSuccess, onError }: { onSuccess?: () => void; onError?: () => void }) => {
     const queryClient = useQueryClient()
+    const { push } = useRouter()
     const { mutate, isPending, isSuccess, isError } = useMutation({
         mutationFn: (userId: string) => UserManagementService.deleteUser(userId),
         mutationKey: ["deleteUser"],
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["getAllUsers"] })
             onSuccess?.()
+            push("/user-management")
         },
         onError: () => {
             onError?.()
@@ -100,6 +105,20 @@ export const useGetUserEvent = (userId: string, page: string, limit: string, fil
         isError, isSuccess
     }
 }
+
+export const useGetUserById = (userId: string) => {
+    const { data, isLoading, isError, isSuccess } = useQuery({
+        queryFn: () => UserManagementService.getUserById(userId),
+        queryKey: ["getUserById", userId]
+    })
+
+    return {
+        //echeck this once type comes in
+        user: data?.data.data,
+        isLoading, isError, isSuccess
+    }
+}
+
 
 
 

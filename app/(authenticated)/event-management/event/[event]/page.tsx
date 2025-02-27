@@ -1,30 +1,70 @@
 "use client";
 import AttendeeTable from "@/components/EventManagement/AttendeeTable";
 import { BackIcon } from "@/components/icons";
+import NativeModal from "@/components/NativeElements/NativeModal";
 import NativeSelect from "@/components/NativeElements/NativeSelect";
+import { Button } from "@/components/ui/button";
 import EventTable from "@/components/UserManagement/EventTables";
-import { useGetEventById } from "@/hooks/useEventManagement";
+import { SearchParams } from "@/constants";
+import { useDeleteEvent, useGetEventById } from "@/hooks/useEventManagement";
+import { useRouterQuery } from "@/hooks/useRouterQuery";
 import Image from "next/image";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import React from "react";
 import { ClipLoader } from "react-spinners";
+import { toast } from "sonner";
 
 const ManageEvent = () => {
-  const { push } = useRouter();
+  const { push, back } = useRouter();
   const { event } = useParams();
   const eventId = event?.toString() || "";
   const { event: currentEvent, isLoading: isEventLoading } =
     useGetEventById(eventId);
+  const { getQuery, changeQueries } = useRouterQuery();
+  const action = getQuery(SearchParams.ACTION) || "";
+  const {
+    deleteEvent,
+    isError,
+    isPending: isDeletingEvent,
+  } = useDeleteEvent({
+    onSuccess: () => toast.success("Event successfully deleted"),
+    onError: () => toast.error("Event could not be deleted"),
+  });
   console.log(currentEvent);
-
+  const handleCloseDialog = () => {
+    //get the id fromm the query and run the delete event api trigger
+    // the code below this can be in the onSuccess the way bolu did to show the modal until request is successfful
+    //check the kind of action in the url so as to know which endpint to call i.e use if calls here for that
+    if (action == "deleteEvent") {
+      deleteEvent({ eventId });
+    }
+    changeQueries({ [SearchParams.ACTION]: undefined });
+  };
   return (
     <div className="py-3">
-      <div className="flex flex-col gap-3 md:gap-0 md:flex-row w-full justify-between">
-        <Link href="/event-management" className="flex gap-2 mt-2 items-center">
-          <BackIcon width="12" height="12" className="cursor-pointer" />
-          <p className="text-[15px] font-bold capitalize">Back to events</p>
-        </Link>
+      <div className="flex w-full justify-between">
+        <div className="flex flex-col gap-3 md:gap-0 md:flex-row w-full justify-between">
+          <div
+            onClick={() => back()}
+            className="flex cursor-pointer gap-2 mt-2 items-center"
+          >
+            <BackIcon width="12" height="12" className="cursor-pointer" />
+            <p className="text-[15px] font-bold capitalize">Go Back</p>
+          </div>
+        </div>
+        <Button
+          onClick={() => {
+            // console.log(original.id);
+            changeQueries({
+              [SearchParams.ACTION]: "deleteEvent",
+              [SearchParams.EVENT_ID]: eventId,
+            });
+          }}
+          className="text-[14px] bg-[#7940EC] capitalize "
+        >
+          delete event
+        </Button>
       </div>
       {isEventLoading ? (
         <div className="flex w-full items-center h-[calc(100vh-400px)] justify-center">
@@ -112,6 +152,10 @@ const ManageEvent = () => {
           <AttendeeTable
             data={currentEvent?.attendees || []}
             isLoading={isEventLoading}
+          />
+          <NativeModal
+            // actionType={"deleteUserEvent"}
+            handleCloseDialog={handleCloseDialog}
           />
         </>
       )}

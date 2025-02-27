@@ -59,3 +59,19 @@ export const useAddPlan = ({ onSuccess, onError }: { onSuccess: () => void, onEr
 }
 
 
+export const useGetPlanSubscribers = (page: string, limit: string, planId: string, filterByEmail: string) => {
+    const { data, isLoading, isError, isSuccess } = useQuery({
+        queryFn: () => PLAN_SERVICE.getPlanSubscribers(page, limit, planId,),
+        queryKey: ["getAllSubscribersForAPlan", page, limit, planId,]
+    })
+
+    return {
+        subscribers: data?.data.data.users,
+        page: data?.data.data.page,
+        limit: data?.data.data.limit,
+        hasNextPage: data?.data.data.hasNextPage,
+        total: data?.data.data.total,
+        isLoading,
+        isError, isSuccess
+    }
+}

@@ -44,14 +44,14 @@ const UserManagementTable = () => {
     pageSize.toString(),
     filterByEmail
   );
-  const {
-    suspendUser,
-    isPending: isSuspendingUser,
-    isError: isSuspendUserError,
-  } = useSuspendUser({
-    onSuccess: () => toast.success("User has been suspended!"),
-    onError: () => toast.error("User cannot be suspended!"),
-  });
+  // const {
+  //   suspendUser,
+  //   isPending: isSuspendingUser,
+  //   isError: isSuspendUserError,
+  // } = useSuspendUser({
+  //   onSuccess: () => toast.success("User has been suspended!"),
+  //   onError: () => toast.error("User cannot be suspended!"),
+  // });
   const {
     deleteUser,
     isPending: isDeletingUser,
@@ -112,6 +112,12 @@ const UserManagementTable = () => {
                     className="capitalize pb-1 border-b-[0.1px] transition-all ease-in hover:font-bold text-[13px]"
                     href={`/user-management/user/${original?.userId}`}
                   >
+                    View user
+                  </Link>
+                  <Link
+                    className="capitalize pb-1 border-b-[0.1px] transition-all ease-in hover:font-bold text-[13px]"
+                    href={`/user-management/userEvent/${original?.userId}`}
+                  >
                     manage user events
                   </Link>
                   <p
@@ -125,7 +131,7 @@ const UserManagementTable = () => {
                   >
                     send user a message
                   </p>
-                  <p
+                  {/* <p
                     className="capitalize cursor-pointer transition-all ease-in hover:font-bold pb-1 border-b-[0.1px] text-[13px]"
                     onClick={() => {
                       // console.log(original.id);
@@ -136,7 +142,7 @@ const UserManagementTable = () => {
                     }}
                   >
                     suspend user
-                  </p>
+                  </p> */}
                   <p
                     className="capitalize pb-1 cursor-pointer transition-all ease-in border-b-[0.1px] hover:font-bold text-[13px]"
                     onClick={() => {
@@ -171,9 +177,9 @@ const UserManagementTable = () => {
     //get the id fromm the query and run the delete event api trigger
     // the code below this can be in the onSuccess the way bolu did to show the modal until request is successfful
     //check the kind of action in the url so as to know which endpint to call i.e use if calls here for that
-    if (action == "suspendUser") {
-      suspendUser(userId);
-    } else if (action == "deleteUser") {
+    // if (action == "suspendUser") {
+    //   suspendUser(userId);
+    if (action == "deleteUser") {
       deleteUser(userId);
     }
   };

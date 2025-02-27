@@ -9,6 +9,10 @@ import { DeleteIcon, OptionIcon } from "../icons";
 import { SearchParams } from "@/constants";
 import NativeModal from "../NativeElements/NativeModal";
 import { useGetUserEvent } from "@/hooks/useUserManagement";
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
+import Link from "next/link";
+import { useDeleteEvent } from "@/hooks/useEventManagement";
+import { toast } from "sonner";
 
 const eventColumnHelper = createColumnHelper<UserEvent>();
 const cellClass = "border-b py-5 border-content2";
@@ -23,6 +27,15 @@ const EventTable = () => {
   const action = getQuery(SearchParams.ACTION) || "";
   const filterByEmail = getQuery(SearchParams.SEARCHED_TERM) || "";
   const userId = getQuery(SearchParams.USER_ID) || "";
+  const eventId = getQuery(SearchParams.EVENT_ID) || "";
+  const {
+    deleteEvent,
+    isError,
+    isPending: isDeletingEvent,
+  } = useDeleteEvent({
+    onSuccess: () => toast.success("Event successfully deleted"),
+    onError: () => toast.error("Event could not be deleted"),
+  });
   console.log(actionFromUrl);
   const { user } = useParams();
   const userIdFromUrl = user?.toString() || "";
@@ -102,54 +115,48 @@ const EventTable = () => {
       header: "Actions",
       cell: ({ row: { original } }) => {
         return (
-          <>
-            <DeleteIcon
-              width="16"
-              height="16"
-              className="cursor-pointer"
-              onClick={() => {
-                // console.log(original.id);
-                changeQueries({ [SearchParams.ACTION]: "deleteUserEvent" });
-              }}
-            />
-          </>
-          //   <div className="flex items-center justify-between gap-10">
-          //     <Popover>
-          //       <PopoverTrigger>
-          //         <span>
-          //           <OptionIcon width={15} height={16} />
-          //         </span>
-          //       </PopoverTrigger>
-          //       <PopoverContent>
-          //         <div className="flex flex-col gap-3">
-          //           <Link
-          //             className="capitalize pb-1 border-b-[0.1px] text-[13px]"
-          //             href={`/user-management/user/${original?.id}`}
-          //           >
-          //             manage user events
-          //           </Link>
-          //           <Link
-          //             className="capitalize pb-1 border-b-[0.1px] text-[13px]"
-          //             href={`/films/edit/${original?.id}`}
-          //           >
-          //             send user a message
-          //           </Link>
-          //           <Link
-          //             className="capitalize pb-1 border-b-[0.1px] text-[13px]"
-          //             href={`/films/edit/${original?.id}`}
-          //           >
-          //             suspend user
-          //           </Link>
-          //           <Link
-          //             className="capitalize pb-1 border-b-[0.1px] text-[13px]"
-          //             href={`/films/edit/${original?.id}`}
-          //           >
-          //             delete
-          //           </Link>
-          //         </div>
-          //       </PopoverContent>
-          //     </Popover>
-          //   </div>
+          // <>
+          //   <DeleteIcon
+          //     width="16"
+          //     height="16"
+          //     className="cursor-pointer"
+          //     onClick={() => {
+          //       // console.log(original.id);
+          //       changeQueries({ [SearchParams.ACTION]: "deleteUserEvent" });
+          //     }}
+          //   />
+          // </>
+          <div className="flex items-center justify-between gap-10">
+            <Popover>
+              <PopoverTrigger>
+                <span>
+                  <OptionIcon width={15} height={16} />
+                </span>
+              </PopoverTrigger>
+              <PopoverContent>
+                <div className="flex flex-col gap-3">
+                  <Link
+                    className="capitalize pb-1 border-b-[0.1px] text-[13px]"
+                    href={`/event-management/event/${original?.eventId}`}
+                  >
+                    View event
+                  </Link>
+                  <p
+                    className="capitalize cursor-pointer text-red-500 pb-1 border-b-[0.1px] text-[13px]"
+                    onClick={() => {
+                      // console.log(original.id);
+                      changeQueries({
+                        [SearchParams.ACTION]: "deleteEvent",
+                        [SearchParams.EVENT_ID]: original?.eventId,
+                      });
+                    }}
+                  >
+                    Delete Event
+                  </p>
+                </div>
+              </PopoverContent>
+            </Popover>
+          </div>
         );
       },
       meta: {
@@ -168,6 +175,9 @@ const EventTable = () => {
     //get the id fromm the query and run the delete event api trigger
     // the code below this can be in the onSuccess the way bolu did to show the modal until request is successfful
     //check the kind of action in the url so as to know which endpint to call i.e use if calls here for that
+    if (action == "deleteEvent") {
+      deleteEvent({ eventId });
+    }
     changeQueries({ [SearchParams.ACTION]: undefined });
   };
 

@@ -12,6 +12,12 @@ export type User = {
     phone: string;
     userType: string;
 };
+export type UserInSubscribers = {
+    _id: string;
+    email: string;
+    userId: string;
+    fullname: string;
+};
 
 
 
@@ -30,6 +36,27 @@ export type UserEvent = {
     description: string
 }
 
+export type ActualUserType = {
+    email: string,
+    username: string,
+    userType: string,
+    photo: string,
+    phone: string,
+    fullname: string,
+    socials: ActualUserTypeSocials,
+    businessEmail: string,
+    businessAddress: string,
+    businessCategory: string,
+    contactName: string,
+    contactPhone: string,
+    suspended: boolean
+}
+
+export type ActualUserTypeSocials = {
+    web: string,
+    instagram: string,
+    facebook: string
+}
 export type PaginatedData<T> = {
     total: number;
     page: number;
@@ -47,6 +74,14 @@ export type PaginatedDataForUserEvents<T> = {
     //   totalPages: number;
     user: EventOwner;
     events: T[];
+};
+export type PaginatedDataForSubscribers<T> = {
+    total: number;
+    page: number;
+    limit: number;
+    hasNextPage: boolean;
+    //   totalPages: number;
+    users: T[];
 };
 
 
