@@ -129,7 +129,7 @@ const PlanDetailTable = () => {
               <PopoverContent>
                 <div className="flex flex-col gap-3">
                   <p
-                    className="capitalize cursor-pointer pb-1 border-b-[0.1px] text-[13px]"
+                    className="capitalize cursor-pointer pb-1 transition-all ease-in hover:font-bold border-b-[0.1px] text-[13px]"
                     onClick={() => {
                       // console.log(original.id);
                       toggleStatus(original.planId);
@@ -138,6 +138,12 @@ const PlanDetailTable = () => {
                   >
                     Toggle Plan Status
                   </p>
+                  <Link
+                    className="capitalize pb-1 border-b-[0.1px] transition-all ease-in hover:font-bold text-[13px]"
+                    href={`/plan-management/plan/${original?.planId}`}
+                  >
+                    View Subscribers
+                  </Link>
                   {/* <p
                     className="capitalize cursor-pointer pb-1 border-b-[0.1px] text-[13px]"
                     onClick={() => {

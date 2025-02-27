@@ -23,7 +23,7 @@ const EventDetailTable = () => {
   const pageSize = 10;
   const filterString = getQuery(SearchParams.FILTER);
   const action = getQuery(SearchParams.ACTION) || "";
-  const filterByEmail = getQuery(SearchParams.SEARCHED_TERM) || "";
+  const eventName = getQuery(SearchParams.SEARCHED_TERM) || "";
   const eventId = getQuery(SearchParams.EVENT_ID) || "";
   const {
     events,
@@ -37,6 +37,7 @@ const EventDetailTable = () => {
     filterString,
     page.toString(),
     pageSize.toString(),
+    eventName,
     // filterByEmail
     "America/New_York"
   );

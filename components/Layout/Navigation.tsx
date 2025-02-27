@@ -218,7 +218,10 @@ export const Sidebar = ({
           key={menu.label}
           setNavStatus={() => {}}
           // ref={(el) => (navRefs.current[index] = el)}
-          active={path === menu.href}
+          active={
+            path === menu.href ||
+            (menu.href !== "/" && path.startsWith(menu.href))
+          }
           menu={menu}
           // onMenuExpanded={setActive}
         />
@@ -354,8 +357,8 @@ export const MobileNav = ({
   useEffect(() => {
     // setActive();
     // closeSidebar();
-    console.log(navStatus);
-  }, [navStatus]);
+    console.log(path.includes("/"));
+  }, [path]);
 
   return (
     <div
@@ -367,7 +370,10 @@ export const MobileNav = ({
         <MenuItem
           key={menu.label}
           // ref={(el) => (navRefs.current[index] = el)}
-          active={path === menu.href}
+          active={
+            path === menu.href ||
+            (menu.href !== "/" && path.startsWith(menu.href))
+          }
           menu={menu}
           setNavStatus={setNavStatus}
           // onMenuExpanded={setActive}

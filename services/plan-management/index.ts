@@ -1,6 +1,7 @@
 import { ApiResponse } from './../login/types';
 import { axiosInstance } from "@/constants"
 import { PaginatedDataForPlans, PlanDetail } from "./types"
+import { PaginatedDataForSubscribers, UserInSubscribers } from '../user-management/types';
 
 export class PLAN_SERVICE {
 
@@ -24,6 +25,14 @@ export class PLAN_SERVICE {
         })
     }
 
+    public static async getPlanSubscribers(page: string, limit: string, planId: string,) {
+        return axiosInstance.get<ApiResponse<PaginatedDataForSubscribers<UserInSubscribers>>>(this.PLAN_BASE_API + `/plan-subscribers?planId=${planId}`, {
+            params: {
+                page,
+                limit,
+            }
+        })
+    }
 
 
 }

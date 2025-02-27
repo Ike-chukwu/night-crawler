@@ -46,9 +46,9 @@ const NativeModal = ({
         };
       case "suspendUser":
         return {
-          title: "suspend user",
-          brief: "Are you sure you want to suspend the user?",
-          btnText: "suspend",
+          title: "Suspension Status",
+          brief: "Are you sure you want to continue with this action?",
+          btnText: "continue",
         };
       case "deleteUser":
         return {
@@ -139,7 +139,7 @@ const NativeModal = ({
               className={
                 "bg-transparent capitalize " +
                 (modalLook().btnText == "delete" ||
-                modalLook().btnText == "suspend" ||
+                modalLook().btnText == "continue" ||
                 modalLook().btnText == "deactivate"
                   ? // modalLook().btnText == "deactivate"
                     "text-red-500"

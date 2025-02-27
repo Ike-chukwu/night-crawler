@@ -49,7 +49,7 @@ const Table: React.FC<Prop> = ({
   columns,
   pageSize = 20,
   pageIndex = 0,
-  rowCount = 100000,
+  rowCount = 0,
   autoResetPageIndex = false,
   setGlobalFilter,
   globalFilter = "",

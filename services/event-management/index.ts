@@ -8,12 +8,13 @@ export class EventManagementService {
     private static EVENT_API_BASE = "/events"
 
 
-    public static getAllEvents(filter: string, page: string, limit: string, timezone: string,) {
+    public static getAllEvents(filter: string, page: string, limit: string, timezone: string, eventName: string) {
         return axiosInstance.get<ApiResponse<PaginatedDataForEvents<EventDetailInTable>>>(this.EVENT_API_BASE + "/table", {
             params: {
                 filter,
                 page,
                 limit,
+                email: eventName
             },
             headers: {
                 timezone

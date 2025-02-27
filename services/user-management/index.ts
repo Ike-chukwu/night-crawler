@@ -1,6 +1,6 @@
 import { axiosInstance } from "@/constants"
 import { ApiResponse } from "../login/types"
-import { PaginatedData, PaginatedDataForUserEvents, User, UserEvent } from "./types"
+import { ActualUserType, PaginatedData, PaginatedDataForUserEvents, User, UserEvent } from "./types"
 
 export class UserManagementService {
 
@@ -42,10 +42,8 @@ export class UserManagementService {
     public static async sendMessage(userId: string, message: string) {
         return axiosInstance.post<ApiResponse<any>>(this.USER_MANAGEMENT_API_BASE + `/send-message`,
             {
-                params: {
-                    message,
-                    userId
-                }
+                message,
+                userId
             }
         )
     }
@@ -60,6 +58,16 @@ export class UserManagementService {
             }
         })
     }
+    public static async getUserById(userId: string) {
+        return axiosInstance.get<ApiResponse<ActualUserType>>(this.USER_MANAGEMENT_API_BASE + `/single/${userId}`, {
+            params: {
+                userId
+            }
+        })
+    }
+
+
+
 }
 
 

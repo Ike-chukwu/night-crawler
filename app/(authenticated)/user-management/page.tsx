@@ -17,27 +17,37 @@ import React, { useEffect, useState } from "react";
 import { useDebounce } from "use-debounce";
 
 const UserManagementPage = () => {
-   const { changeQueries, getQuery } = useRouterQuery();
-    const iniialSearchTerm = getQuery(SearchParams.SEARCHED_TERM) || "";
-    const [inputValue, setInputValue] = useState(iniialSearchTerm);
-    const handleInputChange = (event: any) => {
-      setInputValue(event.target.value);
-    };
-    const [debouncedValue] = useDebounce(inputValue, 900);
-    const filter = getQuery(SearchParams.FILTER);
-    useEffect(() => {
+  const { changeQueries, getQuery } = useRouterQuery();
+  const iniialSearchTerm = getQuery(SearchParams.SEARCHED_TERM) || "";
+  const [inputValue, setInputValue] = useState(iniialSearchTerm ?? "");
+  const handleInputChange = (event: any) => {
+    setInputValue(event.target.value);
+  };
+  const [debouncedValue] = useDebounce(inputValue, 900);
+  const filter = getQuery(SearchParams.FILTER);
+  useEffect(() => {
+    changeQueries({
+      [SearchParams.SEARCHED_TERM]: debouncedValue || undefined,
+      [SearchParams.PAGE]: 1,
+    });
+  }, [debouncedValue]);
+
+  useEffect(() => {
+    if (filter == "ALL") {
       changeQueries({
-        [SearchParams.SEARCHED_TERM]: debouncedValue,
+        [SearchParams.FILTER]: undefined,
         [SearchParams.PAGE]: 1,
       });
-    }, [debouncedValue]);
+    }
+  }, [filter]);
+
   return (
     <div className="">
       <div className="flex justify-between md:items-center md:flex-row flex-col md:gap-0 gap-3">
         <Input
           className="w-full md:w-[300px]"
           placeholder="Search by user mail"
-          value={inputValue || undefined}
+          value={inputValue || ""}
           onChange={handleInputChange}
         />
         <div className="flex  justify-between md:justify-end w-full items-center md:gap-2">
@@ -50,13 +60,16 @@ const UserManagementPage = () => {
           /> */}
           <NativeSelect
             onChange={(value) =>
-              changeQueries({ [SearchParams.FILTER]: value })
+              changeQueries({
+                [SearchParams.FILTER]: value,
+                [SearchParams.PAGE]: 1,
+              })
             }
             placeholder="Pick a role"
             title="Roles"
-            options={["ADVERTISER", "USER"]}
+            options={["ALL", "ADVERTISER", "USER"]}
             className="w-full md:w-[180px]"
-            value={filter || undefined}
+            value={filter || "ALL"}
           />
         </div>
       </div>
