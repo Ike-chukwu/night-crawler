@@ -49,5 +49,9 @@ export class PLAN_SERVICE {
         return axiosInstance.patch<ApiResponse<any>>(this.SUBSCRIPTION_BASE_API + `/restart/${subId}`)
     }
 
+    public static async cancelSubscription(subId: string) {
+        return axiosInstance.patch<ApiResponse<any>>(this.SUBSCRIPTION_BASE_API + `/cancel/${subId}`)
+    }
+
 
 }

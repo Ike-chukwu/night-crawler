@@ -135,3 +135,27 @@ export const useRestartSubscription = ({ onSuccess, onError }: { onSuccess: () =
         isPending, isError, isSuccess
     }
 }
+
+
+export const useCancelSubscription = ({ onSuccess, onError }: { onSuccess: () => void, onError: () => void }) => {
+    const queryClient = useQueryClient()
+    const { mutate, isPending, isSuccess, isError } = useMutation({
+        mutationFn: (variables: string) => PLAN_SERVICE.cancelSubscription(variables),
+        mutationKey: ["cancelSubscription"],
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["getSubscriptionById"] })
+            queryClient.invalidateQueries({ queryKey: ["getAllSubscribersForAPlan"] })
+            queryClient.invalidateQueries({ queryKey: ["getAllPlans"] })
+            onSuccess?.()
+        },
+        onError: () => {
+            onError?.()
+        }
+    })
+
+
+    return {
+        cancelSubscription: mutate,
+        isPending, isError, isSuccess
+    }
+}

@@ -18,7 +18,7 @@ import {
   createSubscriptionSchema,
   SubscriptionPayload,
 } from "@/services/plan-management/schema";
-import {useCreateSubscription } from "@/hooks/usePlans";
+import { useCreateSubscription } from "@/hooks/usePlans";
 import FormInput from "../Form/FormInput";
 
 const AddSubscribersModal = () => {
@@ -40,7 +40,7 @@ const AddSubscribersModal = () => {
     }
   );
   const onSubmit = (data: SubscriptionPayload) => {
-    console.log(data);
+    // console.log(data);
 
     createSubscription({
       email: data.email,
