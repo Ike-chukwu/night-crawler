@@ -1,11 +1,12 @@
 import { ApiResponse } from './../login/types';
 import { axiosInstance } from "@/constants"
 import { PaginatedDataForPlans, PlanDetail } from "./types"
-import { PaginatedDataForSubscribers, UserInSubscribers } from '../user-management/types';
+import { PaginatedDataForSubscribers, SingleSubscriber, UserInSubscribers } from '../user-management/types';
 
 export class PLAN_SERVICE {
 
     private static PLAN_BASE_API = "/plans"
+    private static SUBSCRIPTION_BASE_API = "/subscription"
 
     public static getAllPlans() {
         return axiosInstance.get<ApiResponse<PaginatedDataForPlans<PlanDetail>>>(this.PLAN_BASE_API)
@@ -32,6 +33,20 @@ export class PLAN_SERVICE {
                 limit,
             }
         })
+    }
+
+
+    public static async createSubscription(email: string, planId: string, duration: number) {
+        return axiosInstance.post<ApiResponse<any>>(this.SUBSCRIPTION_BASE_API + `/create`, { email, planId, duration })
+    }
+
+
+    public static async getSubscriptionById(subId: string) {
+        return axiosInstance.get<ApiResponse<SingleSubscriber>>(this.SUBSCRIPTION_BASE_API + `/single/${subId}`)
+    }
+
+    public static async restartSubscription(subId: string) {
+        return axiosInstance.patch<ApiResponse<any>>(this.SUBSCRIPTION_BASE_API + `/restart/${subId}`)
     }
 
 

@@ -29,7 +29,7 @@ export const useSuspendUser = ({ onSuccess, onError }: { onSuccess?: () => void;
         mutationFn: (userId: string) => UserManagementService.suspendUser(userId),
         mutationKey: ["suspendUser"],
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["getAllUsers"] })
+            queryClient.refetchQueries({ queryKey: ["getAllUsers"] })
             onSuccess?.()
             push("/user-management")
         },

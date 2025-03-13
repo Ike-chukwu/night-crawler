@@ -74,6 +74,12 @@ const NativeModal = ({
           brief: "Are you sure you want to delete this event?",
           btnText: "delete",
         };
+      case "restartSubscription":
+        return {
+          title: "Restart Subscription",
+          brief: "Are you sure you want to restart this subscription?",
+          btnText: "restart",
+        };
 
       default:
         return {
@@ -123,23 +129,11 @@ const NativeModal = ({
         <DialogFooter>
           <div className="flex gap-3">
             <Button
-              onClick={() => {
-                changeQueries({
-                  [SearchParams.ACTION]: undefined,
-                  [SearchParams.USER_ID]: undefined,
-                  [SearchParams.EVENT_ID]: undefined,
-                });
-              }}
-              className="capitalize bg-transparent text-black"
-              type="button"
-            >
-              back
-            </Button>
-            <Button
               className={
                 "bg-transparent capitalize " +
                 (modalLook().btnText == "delete" ||
                 modalLook().btnText == "continue" ||
+                modalLook().btnText == "restart" ||
                 modalLook().btnText == "deactivate"
                   ? // modalLook().btnText == "deactivate"
                     "text-red-500"
@@ -159,6 +153,19 @@ const NativeModal = ({
               type="submit"
             >
               {modalLook().btnText}
+            </Button>
+            <Button
+              onClick={() => {
+                changeQueries({
+                  [SearchParams.ACTION]: undefined,
+                  [SearchParams.USER_ID]: undefined,
+                  [SearchParams.EVENT_ID]: undefined,
+                });
+              }}
+              className="capitalize bg-transparent text-black"
+              type="button"
+            >
+              back
             </Button>
           </div>
         </DialogFooter>

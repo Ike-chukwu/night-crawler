@@ -16,6 +16,7 @@ export const useGetAllPlans = () => {
 }
 
 
+
 export const useToggleStatus = ({ onSuccess, onError }: { onSuccess: () => void, onError: () => void }) => {
     const queryClient = useQueryClient()
     const { mutate, isPending, isSuccess, isError } = useMutation({
@@ -73,5 +74,64 @@ export const useGetPlanSubscribers = (page: string, limit: string, planId: strin
         total: data?.data.data.total,
         isLoading,
         isError, isSuccess
+    }
+}
+
+
+export const useCreateSubscription = ({ onSuccess, onError }: { onSuccess: () => void, onError: () => void }) => {
+    const queryClient = useQueryClient()
+    const { mutate, isPending, isSuccess } = useMutation({
+        mutationFn: (variables: { email: string, planId: string, duration: number }) => PLAN_SERVICE.createSubscription(variables.email, variables.planId, variables.duration),
+        mutationKey: ["createSubscription"],
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["getAllPlans"] })
+            queryClient.invalidateQueries({ queryKey: ["getAllSubscribersForAPlan"] })
+            onSuccess?.()
+        },
+        onError: () => {
+            onError?.()
+        }
+    })
+
+
+    return {
+        createSubscription: mutate,
+        isPending
+    }
+}
+export const useGetSubscriptionById = (subId: string) => {
+    const { data, isLoading, isError, isSuccess } = useQuery({
+        queryFn: () => PLAN_SERVICE.getSubscriptionById(subId),
+        queryKey: ["getSubscriptionById", subId]
+    })
+
+
+    return {
+        subscription: data?.data.data.subscription,
+        user: data?.data.data.user,
+        isLoading, isError, isSuccess
+    }
+}
+
+export const useRestartSubscription = ({ onSuccess, onError }: { onSuccess: () => void, onError: () => void }) => {
+    const queryClient = useQueryClient()
+    const { mutate, isPending, isSuccess, isError } = useMutation({
+        mutationFn: (variables: string) => PLAN_SERVICE.restartSubscription(variables),
+        mutationKey: ["restartSubscription"],
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["getSubscriptionById"] })
+            queryClient.invalidateQueries({ queryKey: ["getAllSubscribersForAPlan"] })
+            queryClient.invalidateQueries({ queryKey: ["getAllPlans"] })
+            onSuccess?.()
+        },
+        onError: () => {
+            onError?.()
+        }
+    })
+
+
+    return {
+        restartSubscription: mutate,
+        isPending, isError, isSuccess
     }
 }

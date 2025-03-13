@@ -8,6 +8,7 @@ import React from "react";
 import { useRouterQuery } from "@/app/hooks/useRouterQuery";
 import { SearchParams } from "@/constants";
 import AddPlanModal from "@/components/Plan Management/AddPlanModal";
+import AddSubscribersModal from "@/components/Plan Management/AddSubscribersModal";
 
 const PlanManagementPage = () => {
   const { getQuery, changeQueries } = useRouterQuery();
@@ -24,7 +25,7 @@ const PlanManagementPage = () => {
       <div className="flex justify-between md:items-center md:flex-row flex-col md:gap-0 gap-3">
         <Input
           className="w-full md:w-[300px]"
-          placeholder="Search by user mail"
+          placeholder="Search by plan name"
         />
         <Button
           onClick={() =>
@@ -36,6 +37,7 @@ const PlanManagementPage = () => {
         </Button>
       </div>
       <AddPlanModal handleCloseDialog={handleCloseDialog} />
+      <AddSubscribersModal />
       {/* <AddUserModal handleCloseDialog={handleCloseDialog} /> */}
       <PlanDetailTable />
     </div>
