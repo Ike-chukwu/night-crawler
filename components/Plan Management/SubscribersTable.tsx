@@ -102,60 +102,60 @@ const SubscribersTable = () => {
     //   },
     // }),
 
-    // subscribersColumnHelper.display({
-    //   header: "Actions",
-    //   cell: ({ row: { original } }) => {
-    //     return (
-    //       // <>
-    //       //   <DeleteIcon
-    //       //     width="16"
-    //       //     height="16"
-    //       //     className="cursor-pointer"
-    //       //     onClick={() => {
-    //       //       // console.log(original.id);
-    //       //       changeQueries({ [SearchParams.ACTION]: "deleteUserEvent" });
-    //       //     }}
-    //       //   />
-    //       // </>
-    //       <div className="flex items-center justify-between gap-10">
-    //         <Popover>
-    //           <PopoverTrigger>
-    //             <span>
-    //               <OptionIcon width={15} height={16} />
-    //             </span>
-    //           </PopoverTrigger>
-    //           <PopoverContent>
-    //             <div className="flex flex-col gap-3">
-    //               <Link
-    //                 className="capitalize pb-1 border-b-[0.1px] text-[13px]"
-    //                 href={`/event-management/event/${original?.eventId}`}
-    //               >
-    //                 View subscriber
-    //               </Link>
-    //               <p
-    //                 className="capitalize cursor-pointer text-red-500 pb-1 border-b-[0.1px] text-[13px]"
-    //                 onClick={() => {
-    //                   // console.log(original.id);
-    //                   changeQueries({
-    //                     [SearchParams.ACTION]: "deleteEvent",
-    //                     [SearchParams.EVENT_ID]: original?.eventId,
-    //                   });
-    //                 }}
-    //               >
-    //                 Delete Event
-    //               </p>
-    //             </div>
-    //           </PopoverContent>
-    //         </Popover>
-    //       </div>
-    //     );
-    //   },
-    //   meta: {
-    //     cellProps: {
-    //       className: cellClass,
-    //     },
-    //   },
-    // }),
+    subscribersColumnHelper.display({
+      header: "Actions",
+      cell: ({ row: { original } }) => {
+        return (
+          // <>
+          //   <DeleteIcon
+          //     width="16"
+          //     height="16"
+          //     className="cursor-pointer"
+          //     onClick={() => {
+          //       // console.log(original.id);
+          //       changeQueries({ [SearchParams.ACTION]: "deleteUserEvent" });
+          //     }}
+          //   />
+          // </>
+          <div className="flex items-center justify-between gap-10">
+            <Popover>
+              <PopoverTrigger>
+                <span>
+                  <OptionIcon width={15} height={16} />
+                </span>
+              </PopoverTrigger>
+              <PopoverContent>
+                <div className="flex flex-col gap-3">
+                  <Link
+                    className="capitalize pb-1 border-b-[0.1px] text-[13px] transition-all ease-in hover:font-bold"
+                    href={`/plan-management/plan/subscriber/${original?.subscriptionId}`}
+                  >
+                    View subscriber Detail
+                  </Link>
+                  {/* <p
+                    className="capitalize cursor-pointer text-red-500 pb-1 border-b-[0.1px] text-[13px]"
+                    onClick={() => {
+                      // console.log(original.id);
+                      changeQueries({
+                        [SearchParams.ACTION]: "deleteEvent",
+                        [SearchParams.EVENT_ID]: original?.eventId,
+                      });
+                    }}
+                  >
+                    Delete Event
+                  </p> */}
+                </div>
+              </PopoverContent>
+            </Popover>
+          </div>
+        );
+      },
+      meta: {
+        cellProps: {
+          className: cellClass,
+        },
+      },
+    }),
   ];
 
   const handlePageChange = (newPageIndex: number) => {

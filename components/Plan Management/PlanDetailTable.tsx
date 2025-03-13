@@ -3,7 +3,6 @@ import React from "react";
 import Table from "../ui/Table";
 import { createColumnHelper } from "@tanstack/react-table";
 import { useRouterQuery } from "@/hooks/useRouterQuery";
-import { useRouter } from "next/navigation";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { OptionIcon } from "../icons";
 import Link from "next/link";
@@ -18,7 +17,6 @@ const cellClass = "border-b py-5 border-content2";
 export const defaultCellClass = "border-t border-content2 px-2";
 
 const PlanDetailTable = () => {
-  const router = useRouter();
   const { getQuery, changeQueries } = useRouterQuery();
   const {
     toggleStatus,
@@ -37,36 +35,6 @@ const PlanDetailTable = () => {
     isSuccess,
     isError,
   } = useGetAllPlans();
-  const PlanDetailsArray = [
-    {
-      id: "1",
-      plan: "25 posts /month  x24h runtime",
-      price: "$5.99/m",
-      subscriber: "100",
-      status: "Active",
-    },
-    {
-      id: "2",
-      plan: "6 posts/month x48h runtime",
-      price: "$6.99/m",
-      subscriber: "100",
-      status: "Active",
-    },
-    {
-      id: "3",
-      plan: "4 posts per month  x24h runtime",
-      price: "$1.99/m",
-      subscriber: "100",
-      status: "Active",
-    },
-    {
-      id: "4",
-      plan: "Unlimited post per month x30d runtime",
-      price: "$9.99/m",
-      subscriber: "100",
-      status: "Active",
-    },
-  ];
 
   const PlanDetailColumns = [
     planColumnHelper.display({
@@ -104,12 +72,10 @@ const PlanDetailTable = () => {
         },
       },
     }),
-
     planColumnHelper.accessor("active", {
       header: "Status",
       meta: {
         cellProps: { className: defaultCellClass },
-        headerProps: { className: defaultCellClass },
       },
       cell: ({ row: { original } }) => {
         return <span>{original.active ? "Active" : "Inactive"}</span>;
@@ -144,6 +110,19 @@ const PlanDetailTable = () => {
                   >
                     View Subscribers
                   </Link>
+                  <p
+                    className="capitalize cursor-pointer pb-1 transition-all ease-in hover:font-bold border-b-[0.1px] text-[13px]"
+                    onClick={() => {
+                      // console.log(original.id);
+                      changeQueries({
+                        [SearchParams.FORM_ACTION]: "createSubscription",
+                        [SearchParams.PLAN_ID]: original.planId,
+                      });
+                    }}
+                    // href={`/event-management/event/${original?.id}`}
+                  >
+                    Create Subscription
+                  </p>
                   {/* <p
                     className="capitalize cursor-pointer pb-1 border-b-[0.1px] text-[13px]"
                     onClick={() => {
@@ -180,6 +159,7 @@ const PlanDetailTable = () => {
       },
     }),
   ];
+
   const handleCloseDialog = () => {
     //get the id fromm the query and run the delete event api trigger
     // the code below this can be in the onSuccess the way bolu did to show the modal until request is successfful
@@ -207,6 +187,7 @@ const PlanDetailTable = () => {
         // actionType={"deleteUserEvent"}
         handleCloseDialog={handleCloseDialog}
       />
+      
     </div>
   );
 };

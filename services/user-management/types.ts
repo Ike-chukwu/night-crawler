@@ -13,12 +13,28 @@ export type User = {
     userType: string;
 };
 export type UserInSubscribers = {
-    _id: string;
     email: string;
     userId: string;
     fullname: string;
+    subscriptionId: string;
 };
 
+export type SingleSubscriber = {
+    subscriptionId: string,
+    user: {
+        userId: string,
+        userEmail: string,
+        userName: string,
+        businessName: string
+    },
+    subscription: {
+        type: string,
+        noOfRenewals: number,
+        active: boolean,
+        startDate: string,
+        endDate: string
+    }
+}
 
 
 export type EventOwner = {

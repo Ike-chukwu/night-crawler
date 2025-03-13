@@ -11,3 +11,12 @@ export const planSchema = yup.object().shape({
 
 
 export type PlanPayload = yup.InferType<typeof planSchema>
+
+
+export const createSubscriptionSchema = yup.object().shape({
+    email: yup.string().required("Please enter your email"),
+    duration: yup.number().required("Please enter your duration"),
+
+})
+
+export type SubscriptionPayload = yup.InferType<typeof createSubscriptionSchema>
