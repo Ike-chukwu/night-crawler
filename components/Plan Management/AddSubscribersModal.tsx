@@ -98,7 +98,7 @@ const AddSubscribersModal = () => {
                 <Button
                   onClick={() => {
                     changeQueries({
-                      [SearchParams.FORM_ACTION_2]: undefined,
+                      [SearchParams.FORM_ACTION]: undefined,
                       [SearchParams.PLAN_ID]: undefined,
                     });
                     methods.reset();
