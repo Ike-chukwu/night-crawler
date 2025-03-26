@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Dialog,
   DialogContent,
@@ -35,13 +35,14 @@ const AddPlanModal = ({ handleCloseDialog }: Props) => {
       name: "",
       post_per_month: undefined,
       price: undefined,
-      runtime: undefined,
+      runtime: 0,
       type: undefined,
     },
   });
   const { getQuery, changeQueries } = useRouterQuery();
   //   const userId = getQuery(SearchParams.USER_ID) || "";
   const action = getQuery(SearchParams.FORM_ACTION);
+  const watchedPostValue = methods.watch("post_per_month");
   const {
     addPlan,
     isPending: isAddingPlan,
@@ -57,8 +58,9 @@ const AddPlanModal = ({ handleCloseDialog }: Props) => {
       name: data.name,
       price: data.price,
       post_per_month: data.post_per_month,
-      runtime: data.runtime,
+      runtime: data.post_per_month === "unlimited" ? 30 : data.runtime,
       type: data.type,
+      unlimited: data.post_per_month === "unlimited",
     });
     changeQueries({
       [SearchParams.FORM_ACTION]: undefined,
@@ -66,6 +68,14 @@ const AddPlanModal = ({ handleCloseDialog }: Props) => {
     });
     methods.reset();
   };
+
+  useEffect(() => {
+    if (watchedPostValue == "unlimited") {
+      methods.setValue("runtime", 30);
+    } else {
+      methods.setValue("runtime", 0);
+    }
+  }, [watchedPostValue]);
 
   return (
     <Dialog
@@ -104,11 +114,12 @@ const AddPlanModal = ({ handleCloseDialog }: Props) => {
               placeholder="Enter your price"
               type="number"
             />
-            <FormInput
+            <FormSelect
+              id="post_per_monthe"
               label="Post Per Month"
               name="post_per_month"
               placeholder="Enter no of posts per month"
-              type="number"
+              options={["12", "24", "6", "unlimited"]}
             />
             <FormSelect
               id="type"
