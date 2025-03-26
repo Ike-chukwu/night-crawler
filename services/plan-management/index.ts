@@ -19,9 +19,9 @@ export class PLAN_SERVICE {
     }
 
 
-    public static addPlan(name: string, price: number, post_per_month: number, runtime: number, type: string) {
+    public static addPlan(name: string, price: number, post_per_month: string, runtime: number, type: string, unlimited?: boolean) {
         return axiosInstance.post(this.PLAN_BASE_API + "/plan/add", {
-            name, price, post_per_month, runtime, type
+            name, price, post_per_month, runtime, type, unlimited
 
         })
     }
@@ -47,6 +47,10 @@ export class PLAN_SERVICE {
 
     public static async restartSubscription(subId: string) {
         return axiosInstance.patch<ApiResponse<any>>(this.SUBSCRIPTION_BASE_API + `/restart/${subId}`)
+    }
+
+    public static async cancelSubscription(subId: string) {
+        return axiosInstance.patch<ApiResponse<any>>(this.SUBSCRIPTION_BASE_API + `/cancel/${subId}`)
     }
 
 
