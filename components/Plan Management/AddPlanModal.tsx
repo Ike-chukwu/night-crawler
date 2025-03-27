@@ -52,12 +52,17 @@ const AddPlanModal = ({ handleCloseDialog }: Props) => {
     onError: () => toast.error("Plan could not be added!"),
   });
   const onSubmit = (data: PlanPayload) => {
-    console.log(data);
-
+    const post_per_month_conversion =
+      data.post_per_month === "unlimited"
+        ? "unlimited"
+        : typeof data.post_per_month === "number"
+        ? data.post_per_month
+        : Number(data.post_per_month);
+    console.log(post_per_month_conversion);
     addPlan({
       name: data.name,
       price: data.price,
-      post_per_month: data.post_per_month,
+      post_per_month: post_per_month_conversion,
       runtime: data.post_per_month === "unlimited" ? 30 : data.runtime,
       type: data.type,
       unlimited: data.post_per_month === "unlimited",
