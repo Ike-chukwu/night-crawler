@@ -58,7 +58,7 @@ const AddPlanModal = ({ handleCloseDialog }: Props) => {
         : typeof data.post_per_month === "number"
         ? data.post_per_month
         : Number(data.post_per_month);
-    console.log(post_per_month_conversion);
+    // console.log(post_per_month_conversion);
     addPlan({
       name: data.name,
       price: data.price,
