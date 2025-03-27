@@ -19,7 +19,7 @@ export class PLAN_SERVICE {
     }
 
 
-    public static addPlan(name: string, price: number, post_per_month: string, runtime: number, type: string, unlimited?: boolean) {
+    public static addPlan(name: string, price: number, post_per_month: string | number, runtime: number, type: string, unlimited?: boolean) {
         return axiosInstance.post(this.PLAN_BASE_API + "/plan/add", {
             name, price, post_per_month, runtime, type, unlimited
 

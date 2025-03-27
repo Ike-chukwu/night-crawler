@@ -42,7 +42,7 @@ export const useToggleStatus = ({ onSuccess, onError }: { onSuccess: () => void,
 export const useAddPlan = ({ onSuccess, onError }: { onSuccess: () => void, onError: () => void }) => {
     const queryClient = useQueryClient()
     const { mutate, isPending, isSuccess, isError } = useMutation({
-        mutationFn: (variables: { name: string, price: number, post_per_month: string, runtime: number, type: string, unlimited?: boolean }) => PLAN_SERVICE.addPlan(variables.name, variables.price, variables.post_per_month, variables.runtime, variables.type, variables.unlimited),
+        mutationFn: (variables: { name: string, price: number, post_per_month: string | number, runtime: number, type: string, unlimited?: boolean }) => PLAN_SERVICE.addPlan(variables.name, variables.price, variables.post_per_month, variables.runtime, variables.type, variables.unlimited),
         mutationKey: ["addPlan"],
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["getAllPlans"] })
