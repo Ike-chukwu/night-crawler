@@ -176,10 +176,10 @@ const PlanDetailTable = () => {
           columns={PlanDetailColumns}
           data={plans || []}
           isLoading={isLoadingPlans}
-          pageIndex={1}
-          pageSize={5}
+          // pageIndex={1}
+          // pageSize={5}
           // paginationProps={{ className: "!mt-0" }}
-          rowCount={5}
+          // rowCount={5}
           // onPageChange={handlePageChange}
         />
       </section>

@@ -80,12 +80,12 @@ const NativeModal = ({
           brief: "Are you sure you want to restart this subscription?",
           btnText: "restart",
         };
-      case "cancelSubscription":
-        return {
-          title: "Cancel Subscription",
-          brief: "Are you sure you want to cancel this subscription?",
-          btnText: "cancel subscription",
-        };
+      // case "cancelSubscription":
+      //   return {
+      //     title: "Cancel Subscription",
+      //     brief: "Are you sure you want to cancel this subscription?",
+      //     btnText: "cancel subscription",
+      //   };
 
       default:
         return {

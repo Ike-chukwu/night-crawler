@@ -18,5 +18,10 @@ export const createSubscriptionSchema = yup.object().shape({
     duration: yup.number().required("Please enter your duration"),
 
 })
+export const cancelSubscriptionSchema = yup.object().shape({
+    reason: yup.string().required("Please enter your reason"),
+
+})
 
 export type SubscriptionPayload = yup.InferType<typeof createSubscriptionSchema>
+export type CancelSubscriptionPayload = yup.InferType<typeof cancelSubscriptionSchema>

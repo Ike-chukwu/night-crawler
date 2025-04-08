@@ -140,7 +140,7 @@ export const useRestartSubscription = ({ onSuccess, onError }: { onSuccess: () =
 export const useCancelSubscription = ({ onSuccess, onError }: { onSuccess: () => void, onError: () => void }) => {
     const queryClient = useQueryClient()
     const { mutate, isPending, isSuccess, isError } = useMutation({
-        mutationFn: (variables: string) => PLAN_SERVICE.cancelSubscription(variables),
+        mutationFn: (variables: { subId: string, reason: string }) => PLAN_SERVICE.cancelSubscription(variables),
         mutationKey: ["cancelSubscription"],
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["getSubscriptionById"] })
@@ -157,5 +157,21 @@ export const useCancelSubscription = ({ onSuccess, onError }: { onSuccess: () =>
     return {
         cancelSubscription: mutate,
         isPending, isError, isSuccess
+    }
+}
+
+
+export const useGetAllCancelledSubscriptions = (page: number, limit: number,) => {
+
+    const { data, isLoading, isError, isSuccess } = useQuery({
+        queryFn: () => PLAN_SERVICE.getCancelledSubscriptions(page, limit,),
+        queryKey: ["getAllCancelledSubscriptions", page, limit,]
+    })
+
+    return {
+        cancelledSubscriptions: data?.data.data.subscriptions,
+        total: data?.data.data.total,
+        isLoading,
+        isError, isSuccess
     }
 }

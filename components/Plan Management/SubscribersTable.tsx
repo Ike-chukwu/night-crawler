@@ -162,19 +162,10 @@ const SubscribersTable = () => {
     changeQueries({ [SearchParams.PAGE]: newPageIndex + 1 });
   };
 
-  //   const handleCloseDialog = () => {
-  //     //get the id fromm the query and run the delete event api trigger
-  //     // the code below this can be in the onSuccess the way bolu did to show the modal until request is successfful
-  //     //check the kind of action in the url so as to know which endpint to call i.e use if calls here for that
-  //     if (action == "deleteEvent") {
-  //       deleteEvent({ eventId });
-  //     }
-  //     changeQueries({ [SearchParams.ACTION]: undefined });
-  //   };
-
   return (
     <div className={"flex flex-col items-center gap-7 mt-6 w-full"}>
-      <section className="border-bottom border-content2 w-full rounded-lg ">
+      <p className="text-[14px] md:text-[16px] font-bold">Subscriptions</p>
+      <section className="border-bottom border-content2 w-full rounded-lg mt-[-14] ">
         <Table
           isPaginated
           manualPagination
