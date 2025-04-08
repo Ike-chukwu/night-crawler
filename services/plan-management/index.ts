@@ -1,6 +1,6 @@
 import { ApiResponse } from './../login/types';
 import { axiosInstance } from "@/constants"
-import { PaginatedDataForPlans, PlanDetail } from "./types"
+import { CancelledSubscription, PaginatedDataForCancelledSubscriptions, PaginatedDataForPlans, PlanDetail } from "./types"
 import { PaginatedDataForSubscribers, SingleSubscriber, UserInSubscribers } from '../user-management/types';
 
 export class PLAN_SERVICE {
@@ -49,9 +49,22 @@ export class PLAN_SERVICE {
         return axiosInstance.patch<ApiResponse<any>>(this.SUBSCRIPTION_BASE_API + `/restart/${subId}`)
     }
 
-    public static async cancelSubscription(subId: string) {
-        return axiosInstance.patch<ApiResponse<any>>(this.SUBSCRIPTION_BASE_API + `/cancel/${subId}`)
+    public static async cancelSubscription(payload: { subId: string, reason: string }) {
+        return axiosInstance.patch<ApiResponse<any>>(this.SUBSCRIPTION_BASE_API + `/cancel/${payload.subId}`, { reason: payload.reason })
     }
 
+
+    // public static getCancelledSubscriptions() {
+    //     return axiosInstance.get<ApiResponse<any>>(this.PLAN_BASE_API)
+    // }
+
+    public static async getCancelledSubscriptions(page: number, limit: number,) {
+        return axiosInstance.get<ApiResponse<PaginatedDataForCancelledSubscriptions<CancelledSubscription>>>(this.SUBSCRIPTION_BASE_API + "/cancelled-subscription", {
+            params: {
+                page,
+                limit,
+            }
+        })
+    }
 
 }

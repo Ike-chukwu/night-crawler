@@ -2,6 +2,7 @@
 import { useRouterQuery } from "@/app/hooks/useRouterQuery";
 import { BackIcon } from "@/components/icons";
 import AddSubscribersModal from "@/components/Plan Management/AddSubscribersModal";
+import CancelledSubscriptionsTable from "@/components/Plan Management/CancelledSubscriptionsTable";
 import SubscribersTable from "@/components/Plan Management/SubscribersTable";
 import { Button } from "@/components/ui/button";
 import EventTable from "@/components/UserManagement/EventTables";
@@ -49,6 +50,7 @@ const SubscribersPage = () => {
         </Button>
       </div>
       <SubscribersTable />
+      <CancelledSubscriptionsTable />
       <AddSubscribersModal />
     </div>
   );

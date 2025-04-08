@@ -1,10 +1,10 @@
 "use client";
 import { BackIcon } from "@/components/icons";
 import NativeModal from "@/components/NativeElements/NativeModal";
+import CancelSubscriptionModal from "@/components/Plan Management/CancelSubscriptionModal";
 import { Button } from "@/components/ui/button";
 import { SearchParams } from "@/constants";
 import {
-  useCancelSubscription,
   useGetSubscriptionById,
   useRestartSubscription,
 } from "@/hooks/usePlans";
@@ -42,11 +42,7 @@ const SubscriberDetail = () => {
     onSuccess: () => toast.success("Subscription successfully restarted"),
     onError: () => toast.error("Status could not be restarted"),
   });
-  const { cancelSubscription, isPending: isCancellingSubscription } =
-    useCancelSubscription({
-      onSuccess: () => toast.success("Subscription successfully cancelled"),
-      onError: () => toast.error("Subscription could not be cancelled"),
-    });
+
   const handleCloseDialog = () => {
     //get the id fromm the query and run the delete event api trigger
     // the code below this can be in the onSuccess the way bolu did to show the modal until request is successfful
@@ -55,8 +51,6 @@ const SubscriberDetail = () => {
     //   suspendUser(userId);
     if (action == "restartSubscription") {
       restartSubscription(subId);
-    } else if (action == "cancelSubscription") {
-      cancelSubscription(subId);
     }
   };
 
@@ -143,7 +137,9 @@ const SubscriberDetail = () => {
               </Button>
               <Button
                 onClick={() =>
-                  changeQueries({ [SearchParams.ACTION]: "cancelSubscription" })
+                  changeQueries({
+                    [SearchParams.FORM_ACTION]: "cancelSubscription",
+                  })
                 }
                 className="text-[14px] capitalize bg-white text-black "
               >
@@ -154,6 +150,7 @@ const SubscriberDetail = () => {
         </div>
       </div>
       <NativeModal handleCloseDialog={handleCloseDialog} />
+      <CancelSubscriptionModal />
     </>
   );
 };
