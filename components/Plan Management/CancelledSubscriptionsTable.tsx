@@ -11,7 +11,11 @@ import { CancelledSubscription } from "@/services/plan-management/types";
 const subscribersColumnHelper = createColumnHelper<CancelledSubscription>();
 const cellClass = "border-b py-5 border-content2";
 
-const CancelledSubscriptionsTable = () => {
+type Props = {
+  subId?: string;
+};
+
+const CancelledSubscriptionsTable = ({ subId }: Props) => {
   const { getQuery } = useRouterQuery();
 
   const page = getQuery(SearchParams.PAGE) || 1;
@@ -21,9 +25,7 @@ const CancelledSubscriptionsTable = () => {
     cancelledSubscriptions,
     isLoading: isCancelledSubscriptionLoading,
     total: totalCancelledSubcriptions,
-  } = useGetAllCancelledSubscriptions(Number(page), pageSize);
-
-  console.log(cancelledSubscriptions);
+  } = useGetAllCancelledSubscriptions(Number(page), pageSize, subId);
 
   const cancelledSubscriptionColumns = [
     subscribersColumnHelper.accessor("email", {
@@ -45,6 +47,9 @@ const CancelledSubscriptionsTable = () => {
       cell: ({ getValue }) => {
         const dateString = getValue();
         const date = new Date(dateString);
+        const isValidDate = date instanceof Date && !isNaN(date.getTime());
+
+        if (!isValidDate) return "-";
 
         const options: Intl.DateTimeFormatOptions = {
           year: "numeric",
@@ -53,6 +58,15 @@ const CancelledSubscriptionsTable = () => {
         };
 
         return date.toLocaleDateString("en-US", options);
+      },
+      sortingFn: (rowA, rowB) => {
+        const a = new Date(rowA.original.cancelledAt).getTime();
+        const b = new Date(rowB.original.cancelledAt).getTime();
+
+        if (isNaN(a)) return 1;
+        if (isNaN(b)) return -1;
+
+        return b - a; 
       },
     }),
     subscribersColumnHelper.accessor("phone", {
@@ -75,7 +89,9 @@ const CancelledSubscriptionsTable = () => {
 
   return (
     <div className={"flex flex-col items-center gap-7 mt-6 w-full"}>
-      <p className=" text-[13px] md:text-[16px] font-bold">Cancelled Subscriptions</p>
+      <p className=" text-[13px] md:text-[16px] font-bold">
+        Cancelled Subscriptions
+      </p>
       <section className="border-bottom border-content2 w-full rounded-lg mt-[-14]">
         <Table
           columns={cancelledSubscriptionColumns}

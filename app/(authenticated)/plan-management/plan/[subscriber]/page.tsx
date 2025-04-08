@@ -15,7 +15,7 @@ import { ClipLoader } from "react-spinners";
 
 const SubscribersPage = () => {
   const { subscriber } = useParams();
-  console.log(subscriber);
+  const subId = subscriber?.toString();
 
   const { push } = useRouter();
   const { changeQueries } = useRouterQuery();
@@ -50,7 +50,7 @@ const SubscribersPage = () => {
         </Button>
       </div>
       <SubscribersTable />
-      <CancelledSubscriptionsTable />
+      <CancelledSubscriptionsTable subId={subId} />
       <AddSubscribersModal />
     </div>
   );

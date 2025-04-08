@@ -161,11 +161,12 @@ export const useCancelSubscription = ({ onSuccess, onError }: { onSuccess: () =>
 }
 
 
-export const useGetAllCancelledSubscriptions = (page: number, limit: number,) => {
+export const useGetAllCancelledSubscriptions = (page: number, limit: number, subId?: string) => {
+    console.log(subId);
 
     const { data, isLoading, isError, isSuccess } = useQuery({
         queryFn: () => PLAN_SERVICE.getCancelledSubscriptions(page, limit,),
-        queryKey: ["getAllCancelledSubscriptions", page, limit,]
+        queryKey: ["getAllCancelledSubscriptions", page, limit, subId]
     })
 
     return {
