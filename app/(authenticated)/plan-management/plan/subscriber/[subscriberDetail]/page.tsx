@@ -33,6 +33,13 @@ const SubscriberDetail = () => {
   const formattedEndDate = endDate
     ? new Intl.DateTimeFormat("en-GB").format(endDate)
     : "N/A";
+  const cancelledDate = subscription?.cancelledAt
+    ? new Date(subscription.cancelledAt)
+    : null;
+
+  const formattedCancelledDate = cancelledDate
+    ? new Intl.DateTimeFormat("en-GB").format(cancelledDate)
+    : "N/A";
   const {
     restartSubscription,
     isSuccess: isStatusSuccess,
@@ -85,6 +92,20 @@ const SubscriberDetail = () => {
             <p className="text-[13px] w-[120px]">Email:</p>
             <p className="text-[13px] font-bold">{user?.userEmail}</p>
           </div>
+          {subscription?.isCancelled && (
+            <div className="flex gap-3 items-center">
+              <p className="text-[13px] w-[120px]">Cancellation Date:</p>
+              <p className="text-[13px] font-bold">{formattedCancelledDate}</p>
+            </div>
+          )}
+          {subscription?.isCancelled && (
+            <div className="flex gap-3 items-center">
+              <p className="text-[13px] w-[120px]">Cancellation Reason:</p>
+              <p className="text-[13px] font-bold">
+                {subscription.cancellationReason}
+              </p>
+            </div>
+          )}
         </div>
         <div className="flex flex-col gap-12  ">
           <div className=" flex justify-between items-center px-4">

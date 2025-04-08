@@ -33,6 +33,9 @@ export type SingleSubscriber = {
         active: boolean,
         startDate: string,
         endDate: string
+        cancelledAt: string
+        cancellationReason: string
+        isCancelled: boolean
     }
 }
 
