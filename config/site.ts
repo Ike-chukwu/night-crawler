@@ -28,6 +28,11 @@ export const siteConfig = {
             label: "Plan Management",
             href: "/plan-management",
             // access
+        },
+        {
+            label: "Subcontractors",
+            href: "/subcontractors",
+            // access
         }
     ]
 }

@@ -68,6 +68,12 @@ const NativeModal = ({
           brief: "Are you sure you want to delete the plan?",
           btnText: "delete",
         };
+      case "approveRequest":
+        return {
+          title: "Approve Subcontractor",
+          brief: "Are you sure you want to approve this request?",
+          btnText: "approve",
+        };
       case "deleteEvent":
         return {
           title: "Delete event",
@@ -108,6 +114,7 @@ const NativeModal = ({
           [SearchParams.ACTION]: undefined,
           [SearchParams.USER_ID]: undefined,
           [SearchParams.EVENT_ID]: undefined,
+          [SearchParams.SUBCONTRACTOR_ID]: undefined,
         });
       }}
     >
@@ -153,6 +160,7 @@ const NativeModal = ({
                   [SearchParams.ACTION]: undefined,
                   [SearchParams.USER_ID]: undefined,
                   [SearchParams.EVENT_ID]: undefined,
+                  [SearchParams.SUBCONTRACTOR_ID]: undefined,
                 });
                 // changeQueries({ [SearchParams.USER_ID]: undefined });
               }}
@@ -166,6 +174,7 @@ const NativeModal = ({
                   [SearchParams.ACTION]: undefined,
                   [SearchParams.USER_ID]: undefined,
                   [SearchParams.EVENT_ID]: undefined,
+                  [SearchParams.SUBCONTRACTOR_ID]: undefined,
                 });
               }}
               className="capitalize bg-transparent text-black"

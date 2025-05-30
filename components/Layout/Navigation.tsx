@@ -6,6 +6,7 @@ import {
   EventIcon,
   LogOutIcon,
   PlanIcon,
+  SubContractorIcon,
   UserIconInSidenav,
 } from "../icons";
 import { SiteConfig, siteConfig } from "../../config/site";
@@ -43,6 +44,12 @@ const Icon = ({ title }: { title: string }) => {
       return (
         <div className="w-4">
           <PlanIcon width="18" height="18" />
+        </div>
+      );
+    case "subcontractors":
+      return (
+        <div className="w-4">
+          <SubContractorIcon width="18" height="18" />
         </div>
       );
     case "log out":
