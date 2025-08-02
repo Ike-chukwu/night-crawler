@@ -5,6 +5,7 @@ import {
   CloseIcon,
   EventIcon,
   LogOutIcon,
+  NotifictionIcon,
   PlanIcon,
   SubContractorIcon,
   UserIconInSidenav,
@@ -50,6 +51,12 @@ const Icon = ({ title }: { title: string }) => {
       return (
         <div className="w-4">
           <SubContractorIcon width="18" height="18" />
+        </div>
+      );
+    case "notifications":
+      return (
+        <div className="w-4">
+          <NotifictionIcon className="text-white" width="18" height="18" />
         </div>
       );
     case "log out":

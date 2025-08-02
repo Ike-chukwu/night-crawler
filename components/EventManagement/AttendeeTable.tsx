@@ -25,34 +25,6 @@ const AttendeeTable = ({ data, isLoading }: TableProp) => {
   const page = getQuery(SearchParams.PAGE) || 1;
   const pageSize = 10;
   const [pageIndex, setPageIndex] = useState(0); // For pagination if needed
-  const filterString = getQuery(SearchParams.FILTER);
-  const action = getQuery(SearchParams.ACTION) || "";
-  const filterByEmail = getQuery(SearchParams.SEARCHED_TERM) || "";
-  const eventId = getQuery(SearchParams.EVENT_ID) || "";
-  //   const {
-  //     events,
-  //     isLoading,
-  //     isSuccess,
-  //     hasNextPage,
-  //     limit,
-  //     total,
-  //     page: currentPositon,
-  //   } = useListAllEvents(
-  //     filterString,
-  //     page.toString(),
-  //     pageSize.toString(),
-  //     // filterByEmail
-  //     "America/New_York"
-  //   );
-  //   const {
-  //     deleteEvent,
-  //     isError,
-  //     isPending: isDeletingEvent,
-  //   } = useDeleteEvent({
-  //     onSuccess: () => toast.success("Event successfully deleted"),
-  //     onError: () => toast.error("Event could not be deleted"),
-  //   });
-  //   console.log(events);
 
   const EventDetailColumns = [
     eventAttendeeColumnHelper.display({
@@ -74,16 +46,9 @@ const AttendeeTable = ({ data, isLoading }: TableProp) => {
         },
       },
     }),
-    // eventAttendeeColumnHelper.accessor("address", {
-    //   header: "Address",
-    //   meta: {
-    //     cellProps: {
-    //       className: cellClass,
-    //     },
-    //   },
-    // }),
+
     eventAttendeeColumnHelper.accessor("email", {
-      header: "Emal",
+      header: "Email",
       meta: {
         cellProps: {
           className: cellClass,
