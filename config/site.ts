@@ -33,6 +33,11 @@ export const siteConfig = {
             label: "Subcontractors",
             href: "/subcontractors",
             // access
+        },
+        {
+            label: "Notifications",
+            href: "/notifications",
+            // access
         }
     ]
 }

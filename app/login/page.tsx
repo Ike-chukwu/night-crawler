@@ -6,7 +6,7 @@ import { LoginPayload, loginSchema } from "@/services/login/schema";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import Logo from "./../../public/logo.png";
@@ -20,7 +20,7 @@ const AuthPage = () => {
     },
     mode: "all",
   });
-
+  const [showPassword, setShowPassword] = useState(false);
   const { push } = useRouter();
   const { login, isSuccess, isLoading, isError } = useLogin({
     onSuccess: () => {
@@ -70,12 +70,31 @@ const AuthPage = () => {
                 placeholder="testemail@gmail.com"
                 type="email"
               />
-              <FormInput
-                label="Password"
-                name="password"
-                placeholder="testemail@gmail.com"
-                type="password"
-              />
+              <div className="relative">
+                <FormInput
+                  label="Password"
+                  name="password"
+                  placeholder="testemail@gmail.com"
+                  type={showPassword ? "text" : "password"}
+                  className="w-full"
+                />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  className="absolute top-[50%] right-2 cursor-pointer"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                  <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+              </div>
               <Button
                 type="submit"
                 disabled={isLoading}
