@@ -9,11 +9,9 @@ import { ClipLoader } from "react-spinners";
 const Notification = () => {
   const { changeQueries } = useRouterQuery();
   const { isLoading, notifications } = useGetAllNotifications();
-  console.log(notifications);
 
   const clickNotificationHandler = (id: string) => {
     changeQueries({
-      [SearchParams.NOTIFICATION_ACTION]: "view_notification",
       [SearchParams.NOTIFICATION_ID]: id,
     });
   };

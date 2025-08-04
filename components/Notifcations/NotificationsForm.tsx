@@ -1,15 +1,12 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
-
 import { Button } from "../ui/button";
-
 import { FormProvider, useForm } from "react-hook-form";
 import { useRouterQuery } from "@/app/hooks/useRouterQuery";
 import { SearchParams } from "@/constants";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { toast } from "sonner";
 import FormTextArea from "../Form/FormTextArea";
-
 import NativeSelect from "../NativeElements/NativeSelect";
 import { Input } from "../ui/input";
 import { useDebounce } from "use-debounce";
@@ -23,7 +20,6 @@ import {
   NotificationPayload,
   notificationSchema,
 } from "@/services/notifications/schema";
-import { method } from "lodash";
 
 const NotificationsForm = () => {
   const methods = useForm({
@@ -38,7 +34,7 @@ const NotificationsForm = () => {
     useSendNotification({
       onSuccess: () =>
         toast.success("Notification has been successfully sent!"),
-      onError: () => toast.error("Notification failed to send"),
+      onError: () => toast.error("Notification failed to send!"),
     });
 
   const { sendNotificationWithCSV, isPending: isSendingNotificationWithCsv } =
@@ -50,7 +46,7 @@ const NotificationsForm = () => {
 
   const [csvFile, setCsvFile] = useState<Blob>();
   const { getQuery, changeQueries } = useRouterQuery();
-  const filter = getQuery(SearchParams.FILTER);
+  const filter = getQuery(SearchParams.FILTER) || "ALL";
   const notificationfilter =
     getQuery(SearchParams.NOTIFICATION_FILTER) || "USER";
   const intialSearchedTerm = getQuery(SearchParams.SEARCHED_TERM) || "";
@@ -63,23 +59,12 @@ const NotificationsForm = () => {
     string[]
   >([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
   const handleInputChange = (event: any) => {
     setInputValue(event.target.value);
   };
-  useEffect(() => {
-    if (csvFile) {
-      formData.append("recipients_file", csvFile);
-    }
-  }, [csvFile]);
 
-  useEffect(() => {
-    changeQueries({
-      [SearchParams.SEARCHED_TERM]: debouncedValue || undefined,
-      [SearchParams.PAGE]: 1,
-    });
-  }, [debouncedValue]);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileUploadChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.currentTarget.files) setCsvFile(e.currentTarget.files[0]);
   };
 
@@ -113,6 +98,17 @@ const NotificationsForm = () => {
       (fileInputRef.current as HTMLInputElement).value = "";
     }
   };
+  useEffect(() => {
+    if (csvFile) {
+      formData.append("recipients_file", csvFile);
+    }
+  }, [csvFile]);
+
+  useEffect(() => {
+    changeQueries({
+      [SearchParams.SEARCHED_TERM]: debouncedValue || undefined,
+    });
+  }, [debouncedValue]);
 
   useEffect(() => {
     if (filter !== "CUSTOM") {
@@ -146,13 +142,12 @@ const NotificationsForm = () => {
               onChange={(value) =>
                 changeQueries({
                   [SearchParams.FILTER]: value,
-                  [SearchParams.PAGE]: 1,
                 })
               }
               placeholder="Send To"
               options={["ALL", "CUSTOMER", "BUSINESS", "AFFILIATE", "CUSTOM"]}
               className="w-full"
-              value={filter || "ALL"}
+              value={filter}
             />
           </div>
           <div className="md:w-[33%]">
@@ -167,7 +162,7 @@ const NotificationsForm = () => {
               ref={fileInputRef}
               type="file"
               accept=".csv"
-              onChange={handleChange}
+              onChange={handleFileUploadChange}
               className="block w-full text-sm text-slate-500
         file:mr-4 file:py-2 file:px-4 file:rounded-md
         file:border-0 file:text-sm file:font-semibold
