@@ -17,6 +17,7 @@ export type Recipient = {
   name: string;
   email: string;
   status: string;
+  phone: string;
   _id: string;
 };
 

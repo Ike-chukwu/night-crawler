@@ -8,6 +8,16 @@ export type SubContractor = {
   noOfSubscriptions: number;
   createdAt: string;
 };
+export type RequesSubContractor = {
+  subcontractorId: string;
+  firstname: string;
+  lastname: string;
+  noOfUsers: number;
+  noOfSubscription: number;
+  referalCode: string;
+  active: boolean;
+  createdAt: string;
+};
 
 export type SubContractorByIdRes = {
   subcontractor: MainSubContractorType;
