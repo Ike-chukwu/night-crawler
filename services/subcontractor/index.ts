@@ -20,7 +20,7 @@ export class SubContractorService {
 
   public static async getRequests(page: string, limit: string) {
     return axiosInstance.get<
-      ApiResponse<PaginatedDataInSubContractor<SubContractor>>
+      ApiResponse<PaginatedDataInSubContractor<Request>>
     >(this.SubContractor_API_BASE + "/new_requests", {
       params: { page, limit },
     });

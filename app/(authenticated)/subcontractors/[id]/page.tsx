@@ -127,7 +127,7 @@ const MoreOnSubcontractor = () => {
           </div>
         </div>
         <div className="flex flex-col gap-4 xl:flex-row justify-between">
-          <Link
+          {/* <Link
             className="xl:w-[30%] h-[320px] block"
             href={
               actualSubcontractor?.socialSecurity
@@ -150,7 +150,7 @@ const MoreOnSubcontractor = () => {
               src={actualSubcontractor?.w_9}
               alt=""
             />
-          </Link>
+          </Link> */}
           <Link
             className="xl:w-[30%] h-[320px] block"
             href={
