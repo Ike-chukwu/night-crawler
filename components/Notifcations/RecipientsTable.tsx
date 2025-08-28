@@ -44,8 +44,13 @@ const RecipientsTable = () => {
     //     },
     //   },
     // }),
-    notificationsColumnHelper.accessor("email", {
-      header: "Email",
+    notificationsColumnHelper.display({
+      header: "Recipient",
+      cell: ({ row }) => {
+        return row.original.email || row.original.phone
+          ? row.original.email || row.original.phone
+          : "";
+      },
       meta: {
         cellProps: {
           className: cellClass,

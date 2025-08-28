@@ -4,10 +4,13 @@ import React from "react";
 import Table from "../ui/Table";
 import { createColumnHelper } from "@tanstack/react-table";
 import { SearchParams } from "@/constants";
-import { SubContractor } from "@/services/subcontractor/types";
+import {
+  RequesSubContractor,
+  SubContractor,
+} from "@/services/subcontractor/types";
 import { useGetRequests } from "@/hooks/useSubcontractors";
 
-const subContractorsColumnHelper = createColumnHelper<SubContractor>();
+const subContractorsColumnHelper = createColumnHelper<RequesSubContractor>();
 const cellClass = "border-b py-5 border-content2";
 
 const RequestsTable = () => {
@@ -32,9 +35,9 @@ const RequestsTable = () => {
       },
     }),
 
-    subContractorsColumnHelper.accessor("fullname", {
+    subContractorsColumnHelper.display({
       header: "Name",
-
+      cell: ({ row }) => `${row.original.firstname} ${row.original.lastname}`,
       meta: {
         cellProps: {
           className: cellClass,
@@ -42,15 +45,15 @@ const RequestsTable = () => {
       },
     }),
 
-    subContractorsColumnHelper.accessor("email", {
-      header: "Email",
+    // subContractorsColumnHelper.accessor("email", {
+    //   header: "Email",
 
-      meta: {
-        cellProps: {
-          className: cellClass,
-        },
-      },
-    }),
+    //   meta: {
+    //     cellProps: {
+    //       className: cellClass,
+    //     },
+    //   },
+    // }),
 
     subContractorsColumnHelper.accessor("referalCode", {
       header: "Referral Code",
@@ -60,7 +63,7 @@ const RequestsTable = () => {
         },
       },
     }),
-    subContractorsColumnHelper.accessor("noOfSubscriptions", {
+    subContractorsColumnHelper.accessor("noOfSubscription", {
       header: "No of Subscriptions",
       meta: {
         cellProps: {
@@ -114,6 +117,7 @@ const RequestsTable = () => {
 
   return (
     <div className={"flex flex-col items-center gap-7 mt-6 w-full"}>
+      <p className="uppercase font-bold text-[18px]">incoming requests</p>
       <section className="border-bottom border-content2 w-full rounded-lg ">
         <Table
           isPaginated
