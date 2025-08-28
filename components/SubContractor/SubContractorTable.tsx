@@ -202,6 +202,7 @@ const SubContractorTable = () => {
 
   return (
     <div className={"flex flex-col items-center gap-7 mt-6 w-full"}>
+      <p className="uppercase font-bold text-[18px]">All subcontractors</p>
       <section className="border-bottom border-content2 w-full rounded-lg ">
         <Table
           isPaginated
