@@ -45,7 +45,6 @@ const Subcontractor = () => {
     page.toString(),
     pageSize.toString()
   );
-  console.log(subcontractor);
 
   const {
     restartSubscription,
