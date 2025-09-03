@@ -9,6 +9,9 @@ import {
   SubContractor,
 } from "@/services/subcontractor/types";
 import { useGetRequests } from "@/hooks/useSubcontractors";
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
+import { OptionIcon } from "../icons";
+import Link from "next/link";
 
 const subContractorsColumnHelper = createColumnHelper<RequesSubContractor>();
 const cellClass = "border-b py-5 border-content2";
@@ -45,18 +48,16 @@ const RequestsTable = () => {
       },
     }),
 
-    // subContractorsColumnHelper.accessor("email", {
-    //   header: "Email",
-
-    //   meta: {
-    //     cellProps: {
-    //       className: cellClass,
-    //     },
-    //   },
-    // }),
-
     subContractorsColumnHelper.accessor("referalCode", {
       header: "Referral Code",
+      meta: {
+        cellProps: {
+          className: cellClass,
+        },
+      },
+    }),
+    subContractorsColumnHelper.accessor("email", {
+      header: "Email",
       meta: {
         cellProps: {
           className: cellClass,
@@ -109,6 +110,37 @@ const RequestsTable = () => {
         return <span>{original.active ? "Active" : "Inactive"}</span>;
       },
     }),
+    subContractorsColumnHelper.display({
+      header: "Actions",
+      cell: ({ row: { original } }) => {
+        return (
+          <div className="flex items-center justify-between gap-10">
+            <Popover>
+              <PopoverTrigger>
+                <span>
+                  <OptionIcon width={15} height={16} />
+                </span>
+              </PopoverTrigger>
+              <PopoverContent>
+                <div className="flex flex-col gap-3">
+                  <Link
+                    className="capitalize pb-1 border-b-[0.1px] transition-all ease-in hover:font-bold text-[13px]"
+                    href={`/subcontractors/subcontractor/${original?.subcontractorId}`}
+                  >
+                    View subcontractor
+                  </Link>
+                </div>
+              </PopoverContent>
+            </Popover>
+          </div>
+        );
+      },
+      meta: {
+        cellProps: {
+          className: cellClass,
+        },
+      },
+    }),
   ];
 
   const handlePageChange = (newPageIndex: number) => {
@@ -127,7 +159,7 @@ const RequestsTable = () => {
           isLoading={isLoading}
           pageIndex={currentPositon && currentPositon - 1}
           pageSize={10}
-          // paginationProps={{ className: "!mt-0" }}
+          // paginationProps={{ className: "!mt-0" .}}
           rowCount={total}
           onPageChange={handlePageChange}
         />

@@ -17,6 +17,7 @@ export type RequesSubContractor = {
   referalCode: string;
   active: boolean;
   createdAt: string;
+  email: string;
 };
 
 export type SubContractorByIdRes = {
