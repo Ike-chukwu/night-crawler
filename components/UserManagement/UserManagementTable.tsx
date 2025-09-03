@@ -95,6 +95,14 @@ const UserManagementTable = () => {
         },
       },
     }),
+    userColumnHelper.accessor("plan", {
+      header: "Plan",
+      meta: {
+        cellProps: {
+          className: cellClass,
+        },
+      },
+    }),
     userColumnHelper.display({
       header: "Actions",
       cell: ({ row: { original } }) => {
