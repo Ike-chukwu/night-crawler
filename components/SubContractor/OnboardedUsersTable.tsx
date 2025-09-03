@@ -45,16 +45,55 @@ const OnboardedUsersTable = ({ subId }: Props) => {
         },
       },
     }),
-    onboardedUsersColumnHelper.accessor("userId", {
-      header: "User ID",
+    // onboardedUsersColumnHelper.accessor("userId", {
+    //   header: "User ID",
+    //   meta: {
+    //     cellProps: {
+    //       className: cellClass,
+    //     },
+    //   },
+    // }),
+    onboardedUsersColumnHelper.accessor("userType", {
+      header: "User Type",
       meta: {
         cellProps: {
           className: cellClass,
         },
       },
     }),
-    onboardedUsersColumnHelper.accessor("userType", {
-      header: "User Type",
+    onboardedUsersColumnHelper.accessor("plan", {
+      header: "Plan",
+      meta: {
+        cellProps: {
+          className: cellClass,
+        },
+      },
+    }),
+    onboardedUsersColumnHelper.display({
+      header: "Actions",
+      cell: ({ row: { original } }) => {
+        return (
+          <div className="flex items-center justify-between gap-10">
+            <Popover>
+              <PopoverTrigger>
+                <span>
+                  <OptionIcon width={15} height={16} />
+                </span>
+              </PopoverTrigger>
+              <PopoverContent>
+                <div className="flex flex-col gap-3">
+                  <Link
+                    className="capitalize pb-1 border-b-[0.1px] transition-all ease-in hover:font-bold text-[13px]"
+                    href={`/user-management/user/${original?.userId}`}
+                  >
+                    View User
+                  </Link>
+                </div>
+              </PopoverContent>
+            </Popover>
+          </div>
+        );
+      },
       meta: {
         cellProps: {
           className: cellClass,
