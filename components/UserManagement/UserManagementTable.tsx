@@ -18,7 +18,7 @@ import {
   useUserManagement,
 } from "@/hooks/useUserManagement";
 import { toast } from "sonner";
-
+import { format } from 'date-fns'
 const userColumnHelper = createColumnHelper<User>();
 const cellClass = "border-b py-5 border-content2";
 
@@ -103,6 +103,15 @@ const UserManagementTable = () => {
         },
       },
     }),
+   userColumnHelper.accessor('createdAt', {
+  header: 'Creation Date',
+  meta: {
+    cellProps: {
+      className: cellClass,
+    },
+  },
+  cell: (info) => format(new Date(info.getValue()), 'MM/dd/yyyy'),
+}),
     userColumnHelper.display({
       header: "Actions",
       cell: ({ row: { original } }) => {

@@ -12,6 +12,7 @@ export type User = {
   phone: string;
   userType: string;
   plan: string;
+  createdAt: string;
 };
 export type UserInSubscribers = {
   email: string;

@@ -25,6 +25,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cookies-next": "^5.1.0",
+    "date-fns": "^4.1.0",
     "dayjs": "^1.11.13",
     "lodash": "^4.17.21",
     "lucide-react": "^0.469.0",
@@ -43,6 +44,7 @@
     "yup": "^1.6.1"
   },
   "devDependencies": {
+    "@types/date-fns": "^2.5.3",
     "@types/lodash": "^4.17.14",
     "@types/node": "^20",
     "@types/react": "^19",
